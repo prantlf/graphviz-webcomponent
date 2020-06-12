@@ -19,12 +19,12 @@ Related tools:
 
 ```html
   <graphviz-graph graph="
-		digraph G {
+    digraph G {
       main -> parse -> execute;
       main -> cleanup;
-		}
-	"></graphviz-graph>
-	<script defer src=https://unpkg.com/graphviz-webcomponent@0.0.1/dist/index.min.js></script>
+    }
+  "></graphviz-graph>
+  <script defer src=https://unpkg.com/graphviz-webcomponent@0.0.1/dist/index.min.js></script>
 ```
 
 ## Installation

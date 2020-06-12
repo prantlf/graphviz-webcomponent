@@ -75,6 +75,8 @@ Licensed under the MIT license.
 [WebComponent]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [WASM]: https://developer.mozilla.org/en-US/docs/WebAssembly
 [@hpcc-js/wasm]: https://github.com/hpcc-systems/hpcc-js-wasm#hpcc-jswasm
+[graphviz-builder]: https://github.com/prantlf/graphviz-builder#readme
+[graphviz-cli]: https://github.com/prantlf/graphviz-cli#readme
 [Node.js]: https://nodejs.org/
 [NPM]: https://docs.npmjs.com/cli/npm
 [Yarn]: https://classic.yarnpkg.com/docs/cli/

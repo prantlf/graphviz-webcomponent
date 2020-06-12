@@ -1,6 +1,6 @@
 {
   "name": "graphviz-webcomponent",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "WebComponent for rendering a Graphviz graph from the source script to SVG.",
   "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantlf.tk/)",
   "keywords": [

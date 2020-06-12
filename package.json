@@ -1,0 +1,87 @@
+{
+  "name": "graphviz-webcomponent",
+  "version": "0.0.1",
+  "description": "WebComponent for rendering a Graphviz graph from the source script to SVG.",
+  "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantlf.tk/)",
+  "keywords": [
+    "graphviz",
+    "webcomponent",
+    "web-component",
+    "custom-element"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prantlf/graphviz-webcomponent.git"
+  },
+  "homepage": "https://github.com/prantlf/graphviz-webcomponent#readme",
+  "bugs": "https://github.com/prantlf/graphviz-webcomponent/issues",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "browser": "dist/index.min.js",
+  "module": "src/index.js",
+  "scripts": {
+    "lint": "eslint --cache --max-warnings=0 *.js src test",
+    "fix": "eslint --fix --cache --max-warnings=0 *.js src test",
+    "build:dev": "NODE_ENV=development rollup -c",
+    "build:prod": "NODE_ENV=production rollup -c",
+    "dev": "rollup -c -w",
+    "start": "sirv .",
+    "test": "NODE_ENV=development jest"
+  },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "testMatch": [
+      "**/test/*.js"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/*.js"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "text-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    },
+    "setupFilesAfterEnv": [
+      "jest-puppeteer-istanbul/lib/setup"
+    ],
+    "reporters": [
+      "default",
+      "jest-puppeteer-istanbul/lib/reporter"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "7.10.2",
+    "@hpcc-js/wasm": "0.3.14",
+    "@rollup/plugin-babel": "^5.0.3",
+    "babel-plugin-istanbul": "6.0.0",
+    "eslint": "7.2.0",
+    "eslint-config-standard": "14.1.1",
+    "eslint-config-standard-with-typescript": "18.0.2",
+    "eslint-plugin-import": "2.21.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
+    "jest-cli": "26.0.1",
+    "jest-puppeteer": "4.4.0",
+    "jest-puppeteer-istanbul": "0.5.3",
+    "puppeteer": "3.3.0",
+    "rollup": "2.15.0",
+    "rollup-plugin-livereload": "1.3.0",
+    "rollup-plugin-terser": "6.1.0",
+    "sirv-cli": "1.0.0"
+  }
+}

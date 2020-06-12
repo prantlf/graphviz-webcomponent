@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta charset=utf-8>
+	<meta name=viewport content=width=device-width,initial-scale=1>
+	<meta name=description content="Tests wrong URL to Graphviz WASM."></meta>
+	<title>WASM Error Test</title>
+</head>
+
+<body>
+  <graphviz-graph wasmFolder="invalid" graph="
+		digraph G {}
+	"></graphviz-graph>
+	<script defer src=../dist/index.min.js></script>
+</body>
+</html>

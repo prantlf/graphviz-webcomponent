@@ -31,7 +31,7 @@
     "build:dev": "NODE_ENV=development rollup -c",
     "build:prod": "NODE_ENV=production rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv .",
+    "start": "http-server -p 5000",
     "test": "NODE_ENV=development jest"
   },
   "jest": {
@@ -75,13 +75,13 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
+    "http-server": "^0.12.3",
     "jest-cli": "26.0.1",
     "jest-puppeteer": "4.4.0",
     "jest-puppeteer-istanbul": "0.5.3",
     "puppeteer": "3.3.0",
     "rollup": "2.15.0",
     "rollup-plugin-livereload": "1.3.0",
-    "rollup-plugin-terser": "6.1.0",
-    "sirv-cli": "1.0.0"
+    "rollup-plugin-terser": "6.1.0"
   }
 }

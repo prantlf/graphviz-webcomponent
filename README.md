@@ -8,7 +8,7 @@
 [![devDependency Status](https://david-dm.org/prantlf/graphviz-webcomponent/dev-status.svg)](https://david-dm.org/prantlf/graphviz-webcomponent#info=devDependencies)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-[WebComponent] for rendering a [Graphviz] graph from the source script to SVG. Uses [@hpcc-js/wasm] to generate the graph image in the web browser using [WASM].
+[WebComponent] for rendering a [Graphviz] graph from the source script to SVG. Uses [@hpcc-js/wasm] to generate the graph image in the web browser using [WASM]. See it working [on-line]!
 
 Related tools:
 
@@ -72,9 +72,10 @@ Copyright (c) 2020 Ferdinand Prantl
 
 Licensed under the MIT license.
 
+[on-line]: https://prantlf.github.io/graphviz-webcomponent
 [WebComponent]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [WASM]: https://developer.mozilla.org/en-US/docs/WebAssembly
-[@hpcc-js/wasm]: https://github.com/hpcc-systems/hpcc-js-wasm#hpcc-jswasm
+[@hpcc-js/wasm]: https://github.com/hpcc-systems/hpcc-js-wasm#readme
 [graphviz-builder]: https://github.com/prantlf/graphviz-builder#readme
 [graphviz-cli]: https://github.com/prantlf/graphviz-cli#readme
 [Node.js]: https://nodejs.org/

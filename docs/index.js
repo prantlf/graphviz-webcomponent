@@ -1,10 +1,9 @@
 const source = document.getElementById('source')
 const graph = document.getElementById('graph')
-const render = document.getElementById('render')
 const saveSVG = document.getElementById('save-svg')
 const savePNG = document.getElementById('save-png')
 const svgSizeRegExp = new RegExp('<svg width="(\\d+)pt" height="(\\d+)pt"')
-let svg, png
+let svg, png, lastError, pendingUpdate, runningUpdate, remainingError
 
 graph.graph = source.textContent
 
@@ -31,7 +30,8 @@ function convertSVGToPNG () {
 }
 
 async function rememberImage ({ detail }) {
-  render.disabled = false
+  runningUpdate = false
+  lastError = undefined
   svg = detail
   saveSVG.disabled = false
   try {
@@ -43,9 +43,8 @@ async function rememberImage ({ detail }) {
 }
 
 function forgetImage () {
-  svg = png = undefined
+  svg = png = runningUpdate = lastError = undefined
   saveSVG.disabled = savePNG.disabled = true
-  render.disabled = false
 }
 
 function downloadFile (blob) {
@@ -59,12 +58,42 @@ function downloadFile (blob) {
   URL.revokeObjectURL(url)
 }
 
-function updateGraph (event) {
-  event.preventDefault()
-  const value = source.value.trim()
-  if (value) render.disabled = true
-  else forgetImage()
-  graph.graph = value
+function displayError () {
+  clearTimeout(remainingError)
+  remainingError = undefined
+  if (pendingUpdate || runningUpdate || !lastError) return
+  graph.graph = source.value
+}
+
+function scheduleDisplayError () {
+  if (remainingError) clearTimeout(remainingError)
+  remainingError = setTimeout(displayError, 300)
+}
+
+async function tryUpdateGraph () {
+  if (runningUpdate) return scheduleUpdateGraph()
+  clearTimeout(pendingUpdate)
+  pendingUpdate = undefined
+  runningUpdate = true
+  lastError = undefined
+  const value = source.value
+  if (value) {
+    try {
+      await graph.tryGraph(value)
+    } catch (error) {
+      runningUpdate = false
+      lastError = error
+      scheduleDisplayError()
+    }
+  } else {
+    graph.graph = value
+    forgetImage()
+  }
+}
+
+function scheduleUpdateGraph () {
+  if (pendingUpdate) clearTimeout(pendingUpdate)
+  pendingUpdate = setTimeout(tryUpdateGraph, 300)
 }
 
 function saveAsSVG () {
@@ -77,6 +106,6 @@ function saveAsPNG () {
 
 graph.addEventListener('render', rememberImage)
 graph.addEventListener('error', forgetImage)
-render.addEventListener('click', updateGraph)
+source.addEventListener('input', scheduleUpdateGraph)
 saveSVG.addEventListener('click', saveAsSVG)
 savePNG.addEventListener('click', saveAsPNG)

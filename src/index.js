@@ -1,5 +1,6 @@
 const graphKey = Symbol('graph')
 const dirtyKey = Symbol('dirty')
+const suspendedKey = Symbol('suspended')
 
 const pendingElements = new Set()
 let wasmFolder, renderer
@@ -34,6 +35,22 @@ function updateGraph (element) {
       console.error('Graphviz failed:', error)
       element.shadowRoot.innerHTML = error.message
       triggerEvent(element, 'error', error)
+    })
+}
+
+async function tryUpdateGraph (element, graph) {
+  if (renderer === undefined || renderer === false) throw createLoadError()
+  if (!graph) return
+  return renderer
+    .layout(graph, 'svg')
+    .then(svg => {
+      element[suspendedKey] = true
+      element.graph = graph
+      element[dirtyKey] = false
+      element[suspendedKey] = false
+      element.shadowRoot.innerHTML = svg
+      triggerEvent(element, 'render', svg)
+      return svg
     })
 }
 
@@ -79,12 +96,19 @@ class GraphvizElement extends HTMLElement {
 
   attributeChangedCallback (name, oldValue, newValue) {
     this[graphKey] = newValue
-    if (this.isConnected) updateGraph(this)
-    else this[dirtyKey] = true
+    if (this.isConnected) {
+      if (!this[suspendedKey]) updateGraph(this)
+    } else {
+      this[dirtyKey] = true
+    }
   }
 
   connectedCallback () {
     if (this[dirtyKey]) updateGraph(this)
+  }
+
+  tryGraph (graph) {
+    return tryUpdateGraph(this, graph)
   }
 
   static get observedAttributes () { return ['graph'] }

@@ -24,7 +24,7 @@ Related tools:
       main -> cleanup;
     }
   "></graphviz-graph>
-  <script defer src=https://unpkg.com/graphviz-webcomponent@0.0.1/dist/index.min.js></script>
+  <script defer src=https://unpkg.com/graphviz-webcomponent@0.1.0/dist/index.min.js></script>
 ```
 
 ## Installation
@@ -40,7 +40,7 @@ pnpm i graphviz-webcomponent
 If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing wither to CDN or to the local filesystem:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@0.0.1/dist/index.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@0.1.0/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
 
@@ -65,6 +65,10 @@ The attribute `wasmFolder` can specify URL to the directory where `@hpcc-js/wasm
 Whenever the SVG inside the `graphviz-graph` element is successfully updated, the custom event `render` with the SVG source as details will be triggered on the element. If the rendering fails, the custom event `error` with the `Error` instance as details will be triggered.
 
 The very first `graphviz-graph` element will load [@hpcc-js/wasm] and once it succeeds, the custom event `GraphvizLoaded` will be triggered on `document` with the source [@hpcc-js/wasm] directory as details. If the loading fails, the custom event `error` with the `Error` instance as details will be triggered.
+
+### Methods
+
+The method `tryGraph(graph: string): Promise<string>` can be called to conditionally set the `graph` attribute. If rendering the graph script succeeds, the input value will be set to the `graph` attribute, the `graphviz-graph` element will be updated (including triggering the `render` event) and the Promise will be resolved with the output SVG. If rendering the graph script fails, the `graphviz-graph` element will remain unchanged (no `error` event triggered) and the Promise will be rejected with the error.
 
 ## License
 

@@ -5,7 +5,7 @@
   <meta name=viewport content=width=device-width,initial-scale=1>
   <meta name=description content="Renders a Graphviz graph from the source script to SVG."></meta>
   <title>Graphviz Renderer</title>
-  <link rel=stylesheet href=index.css>
+  <link rel=stylesheet href=css/index.min.css>
 </head>
 
 <body>
@@ -16,19 +16,20 @@
 
   <main>
     <form>
-      <textarea id=source>
-digraph "G" {
+      <pre id=source-wrapper>
+        <div id=source class="language-graphviz line-numbers match-braces rainbow-braces">digraph "G" {
   graph [ label = "Example" ];
-  node [ color = "blue", shape =Mdiamond ];
+  node [ color = "blue", shape = Mdiamond ];
   edge [ color = "red", label = "Say" ];
   "Hello";
   "World";
   "Hello" -> "World";
 }
-      </textarea>
-      <br>
+</div>
+      </pre>
       <button id=save-svg type=button disabled>Save SVG</button>
       <button id=save-png type=button disabled>Save PNG</button>
+      <button id=save-script type=button>Save script</button>
     </form>
     <graphviz-graph id=graph></graphviz-graph>
   </main>
@@ -42,6 +43,6 @@ digraph "G" {
   </footer>
 
   <script defer src=https://unpkg.com/graphviz-webcomponent@0.1.0/dist/index.min.js></script>
-  <script defer src=index.js></script>
+  <script defer src=js/index.min.js></script>
 </body>
 </html>

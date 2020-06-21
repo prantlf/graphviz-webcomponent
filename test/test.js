@@ -121,7 +121,7 @@ digraph G {
     await expectSVG()
   })
 
-  test('reports typo in graph source', async () => {
+  test('reports typo in graph script', async () => {
     await loadPage('graph.error')
     await waitForErrorEvent()
     await waitForGraphContent()

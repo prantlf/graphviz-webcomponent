@@ -3,30 +3,28 @@
 <head>
   <meta charset=utf-8>
   <meta name=viewport content=width=device-width,initial-scale=1>
-  <meta name=description content="Renders a Graphviz graph from the source script to SVG."></meta>
-  <title>Graphviz Renderer</title>
+  <meta name=description content="Edits Graphviz script with syntax highlighting and renders it to an SVG image."></meta>
+  <title>Graphviz Editor and Renderer</title>
   <link rel=stylesheet href=css/index.min.css>
 </head>
 
 <body>
   <header>
-    <h1>Graphviz Renderer</h1>
+    <h1>Graphviz Editor and Renderer</h1>
     <p>Write the graph script to the text area below and watch the graph image rendered.</p>
   </header>
 
   <main>
     <form>
-      <pre id=source-wrapper>
-        <div id=source class="language-graphviz line-numbers match-braces rainbow-braces">digraph "G" {
-  graph [ label = "Example" ];
-  node [ color = "blue", shape = Mdiamond ];
-  edge [ color = "red", label = "Say" ];
-  "Hello";
-  "World";
-  "Hello" -> "World";
+      <graphviz-script-editor id=source class="line-numbers match-braces rainbow-braces" value="digraph &quot;G&quot; {
+  graph [ label = &quot;Example&quot; ];
+  node [ color = &quot;blue&quot;, shape = Mdiamond ];
+  edge [ color = &quot;red&quot;, label = &quot;  Say&quot; ];
+  &quot;Hello&quot;;
+  &quot;World&quot;;
+  &quot;Hello&quot; -> &quot;World&quot;;
 }
-</div>
-      </pre>
+"></graphviz-script-editor>
       <button id=save-svg type=button disabled>Save SVG</button>
       <button id=save-png type=button disabled>Save PNG</button>
       <button id=save-script type=button>Save script</button>
@@ -35,7 +33,7 @@
   </main>
 
 	<footer>
-		<small>Copyright &copy; 2020 Ferdinand Prantl. Version 0.1.0. See the
+		<small>Copyright &copy; 2020 Ferdinand Prantl. Version 0.2.0. See the
 			<a href=https://github.com/prantlf/graphviz-webcomponent#readme>project pages</a>
 			for more information.</small>
 		<!-- See http://tholman.com/github-corners/ -->

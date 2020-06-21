@@ -3,6 +3,9 @@
  * Inspired by Visual Studio syntax coloring
  */
 
+import { css } from 'lit-element'
+
+export default css`
  code[class*="language-"],
  pre[class*="language-"] {
    color: #393A34;
@@ -164,4 +167,4 @@
    background: -webkit-linear-gradient(left, rgba(193, 222, 241, 0.2) 70%, rgba(221, 222, 241, 0));
    background: linear-gradient(to right, rgba(193, 222, 241, 0.2) 70%, rgba(221, 222, 241, 0));
  }
- 
+`

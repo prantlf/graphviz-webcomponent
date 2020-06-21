@@ -1,24 +1,12 @@
-/* global Prism */
-
-import './prism-core.js'
-import './prism-line-numbers.js'
-import './prism-match-braces.js'
-import './prism-graphviz.js'
-import { CodeJar } from 'codejar'
-
-Prism.codeTag = 'div'
-
-const sourceWrapper = document.getElementById('source-wrapper')
 const source = document.getElementById('source')
 const graph = document.getElementById('graph')
 const saveSVG = document.getElementById('save-svg')
 const savePNG = document.getElementById('save-png')
 const saveScript = document.getElementById('save-script')
-const svgSizeRegExp = new RegExp('<svg width="(\\d+)pt" height="(\\d+)pt"')
-const jar = CodeJar(source, Prism.highlightElement, { tab: '  ' })
+const svgSizeRegExp = /<svg width="(\d+)pt" height="(\d+)pt"/
 let svg, png, lastError, pendingUpdate, runningUpdate, remainingError
 
-graph.graph = jar.toString()
+graph.setAttribute('graph', source.getAttribute('value'))
 
 function convertSVGToPNG () {
   return new Promise((resolve, reject) => {
@@ -91,7 +79,7 @@ async function tryUpdateGraph () {
   pendingUpdate = undefined
   runningUpdate = true
   lastError = undefined
-  const value = jar.toString()
+  const value = source.value
   if (value) {
     try {
       await graph.tryGraph(value)
@@ -123,23 +111,9 @@ function saveAsText () {
   downloadFile(new Blob([graph.graph], { type: 'text/plain' }))
 }
 
-let width = sourceWrapper.clientWidth
-let height = sourceWrapper.clientHeight
-
-function updateLineNumbers () {
-  const newWidth = sourceWrapper.clientWidth
-  const newHeight = sourceWrapper.clientHeight
-  if (newWidth !== width || newHeight !== height) {
-    Prism.plugins.lineNumbers.updateLineNumbers(sourceWrapper)
-    width = newWidth
-    height = newHeight
-  }
-}
-
-jar.onUpdate(scheduleUpdateGraph)
+source.addEventListener('input', scheduleUpdateGraph)
 graph.addEventListener('render', rememberImage)
 graph.addEventListener('error', forgetImage)
 saveSVG.addEventListener('click', saveAsSVG)
 savePNG.addEventListener('click', saveAsPNG)
 saveScript.addEventListener('click', saveAsText)
-sourceWrapper.addEventListener('mouseup', updateLineNumbers)

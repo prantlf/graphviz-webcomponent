@@ -1,4 +1,4 @@
-/* global Prism */
+import Prism from './prism-core'
 
 Prism.languages.graphviz = {
   comment: [{

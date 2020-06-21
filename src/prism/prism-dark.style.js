@@ -1,3 +1,6 @@
+import { css } from 'lit-element'
+
+export default css`
 pre[class*="language-"],
 code[class*="language-"] {
 	color: #d4d4d4;
@@ -205,3 +208,4 @@ pre[class*="language-"] > code[class*="language-"] {
 	line-height: inherit;
 	white-space: pre;
 }
+`

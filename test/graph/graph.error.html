@@ -2,17 +2,17 @@
 <html lang=en>
 <head>
   <meta charset=utf-8>
-  <meta name=viewport content=width=device-width,initial-scale=1>
+  <meta name=viewport content="width=device-width,initial-scale=1">
   <meta name=description content="Tests a typo in the graph script source text."></meta>
   <title>Error Handling Test</title>
 </head>
 
 <body>
-  <graphviz-graph wasmFolder="../node_modules/@hpcc-js/wasm/dist" graph="
-    digraph G {
-      layout=error
-    }
+  <graphviz-graph wasmFolder=../../node_modules/@hpcc-js/wasm/dist graph="
+digraph G {
+  layout=error
+}
   "></graphviz-graph>
-  <script defer src=../dist/index.min.js></script>
+  <script defer src=../../dist/index.min.js></script>
 </body>
 </html>

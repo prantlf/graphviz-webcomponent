@@ -1,0 +1,35 @@
+html { height: 100% }
+
+body, main { display: flex }
+
+body {
+  flex-direction: column;
+  margin: 1ex;
+  height: calc(100% - 2ex);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1 { margin: 0 }
+
+#source {
+  min-width: 40ex;
+  width: 40vw;
+  height: 50ex;
+}
+
+#graph { margin-left: 1ex }
+
+button {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+  padding: 1ex;
+  border-radius: .5ex;
+}
+
+footer { margin-top: auto }
+
+@media (max-width: 600px) {
+  main { flex-direction: column }
+
+  #source { width: calc(100vw - 3ex) }
+}

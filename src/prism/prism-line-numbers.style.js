@@ -1,3 +1,6 @@
+import { css } from 'lit-element'
+
+export default css`
 pre[class*="language-"].line-numbers {
 	position: relative;
 	padding-left: 3.8em;
@@ -39,3 +42,4 @@ pre[class*="language-"].line-numbers > div {
 			padding-right: 0.8em;
 			text-align: right;
 		}
+`

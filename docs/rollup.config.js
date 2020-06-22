@@ -18,12 +18,12 @@ export default [
       resolve(),
       watch && serve(),
       watch && livereload('.'),
-      !watch && terser()
+      !watch && terser({ output: { comments: false } })
     ],
     watch: { clearScreen: false }
   },
   {
-    input: 'css/index.scss',
+    input: 'css/index.css',
     output: { file: 'css/index.min.css' },
     plugins: [
       postcss({

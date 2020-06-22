@@ -1,3 +1,6 @@
+import { css } from 'lit-element'
+
+export default css`
 .token.punctuation.brace-hover,
 .token.punctuation.brace-selected {
 	outline: solid 1px;
@@ -27,3 +30,4 @@
 	color: #E0E;
 	opacity: 1;
 }
+`

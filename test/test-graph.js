@@ -154,6 +154,15 @@ digraph G {
     await expectSVG()
   })
 
+  test('changes image scale', async () => {
+    const transform = await page.evaluate(() => {
+      const graphviz = document.querySelector('graphviz-graph')
+      graphviz.scale = '0.8'
+      return graphviz.shadowRoot.children[0].style.transform
+    })
+    expect(transform).toBe('scale(0.8)')
+  })
+
   test('reports typo in graph script', async () => {
     await loadPage('graph.error')
     await waitForErrorEvent()

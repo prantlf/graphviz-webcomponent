@@ -1,4 +1,5 @@
 const graphKey = Symbol('graph')
+const scaleKey = Symbol('scale')
 const dirtyKey = Symbol('dirty')
 const suspendedKey = Symbol('suspended')
 
@@ -28,6 +29,7 @@ function updateGraph (element) {
     .layout(graph, 'svg')
     .then(svg => {
       element.shadowRoot.innerHTML = svg
+      applyScale(element)
       triggerEvent(element, 'render', svg)
     })
     .catch(error => {
@@ -49,9 +51,16 @@ async function tryUpdateGraph (element, graph) {
       element[dirtyKey] = false
       element[suspendedKey] = false
       element.shadowRoot.innerHTML = svg
+      applyScale(element)
       triggerEvent(element, 'render', svg)
       return svg
     })
+}
+
+function applyScale (element) {
+  const svg = element.shadowRoot.children[0]
+  const scale = element[scaleKey]
+  if (svg && scale) svg.style.transform = `scale(${scale})`
 }
 
 function renderPendingGraphs () {
@@ -94,12 +103,22 @@ class GraphvizGraphElement extends HTMLElement {
   get graph () { return this[graphKey] }
   set graph (value) { this.setAttribute('graph', value) }
 
+  get scale () { return this[scaleKey] }
+  set scale (value) { this.setAttribute('scale', value) }
+
   attributeChangedCallback (name, oldValue, newValue) {
-    this[graphKey] = newValue
-    if (this.isConnected) {
-      if (!this[suspendedKey]) updateGraph(this)
-    } else {
-      this[dirtyKey] = true
+    switch (name) {
+      case 'graph':
+        this[graphKey] = newValue
+        if (this.isConnected) {
+          if (!this[suspendedKey]) updateGraph(this)
+        } else {
+          this[dirtyKey] = true
+        }
+        break
+      case 'scale':
+        this[scaleKey] = newValue
+        applyScale(this)
     }
   }
 
@@ -111,7 +130,7 @@ class GraphvizGraphElement extends HTMLElement {
     return tryUpdateGraph(this, graph)
   }
 
-  static get observedAttributes () { return ['graph'] }
+  static get observedAttributes () { return ['graph', 'scale'] }
 }
 
 customElements.define('graphviz-graph', GraphvizGraphElement)

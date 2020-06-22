@@ -81,7 +81,7 @@ Distributed scripts:
 The custom element `graphviz-graph` generates an SVG and displays it in its shadow root.
 
 ```html
-<graphviz-graph graph="..." wasmFolder="..."></graphviz-graph>
+<graphviz-graph graph="..." wasmFolder="..." scale="..."></graphviz-graph>
 ```
 
 #### Attributes
@@ -89,6 +89,8 @@ The custom element `graphviz-graph` generates an SVG and displays it in its shad
 The attribute `graph` supplies the graph script in the [Graphviz] format. It can span over multiple lines. Do not forget to escape ampersand, quotation marks and other sensitive characters by HTML entities. Whenever the `graph` attribute changes, the graph will be re-generated and re-rendered. If it is empty, the `graphviz-graph` will be empty. If rendering of the graph image fails, the element will display the error message.
 
 The attribute `wasmFolder` can specify URL to the directory where `@hpcc-js/wasm` is deployed. The default value is `https://unpkg.com/@hpcc-js/wasm@0.3.14/dist`. If this attribute is used, all `graphviz-graph` have to contain the same value and this value has to be set when the elements are created. Later changes of this attribute will have no effect.
+
+The attribute `scale` sets the "zoom" level to the SVG content. It has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.
 
 #### Events
 

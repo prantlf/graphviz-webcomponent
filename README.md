@@ -31,7 +31,7 @@ Render a graph:
     main -> cleanup;
   }
 "></graphviz-graph>
-<script defer src=https://unpkg.com/graphviz-webcomponent@0.3.0/dist/graph.min.js></script>
+<script defer src=https://unpkg.com/graphviz-webcomponent@0.3.1/dist/graph.min.js></script>
 ```
 
 Show an editor and render the edited content to a graph:
@@ -45,7 +45,7 @@ Show an editor and render the edited content to a graph:
 "></graphviz-script-editor>
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>>
-  import 'https://unpkg.com/graphviz-webcomponent@0.3.0/dist/index.min.js'
+  import 'https://unpkg.com/graphviz-webcomponent@0.3.1/dist/index.min.js'
   document.getElementById('source').addEventListener('input', event =>
     document.getElementById('graph').graph = event.details)
 </script>
@@ -64,7 +64,7 @@ pnpm i graphviz-webcomponent
 If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing either to CDN or to the local filesystem:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@0.3.0/dist/index.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@0.3.1/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
 

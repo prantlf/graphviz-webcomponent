@@ -60,7 +60,10 @@ async function tryUpdateGraph (element, graph) {
 function applyScale (element) {
   const svg = element.shadowRoot.children[0]
   const scale = element[scaleKey]
-  if (svg && scale) svg.style.transform = `scale(${scale})`
+  if (svg && scale) {
+    svg.style.transform = `scale(${scale})`
+    svg.style.transformOrigin = 'top left'
+  }
 }
 
 function renderPendingGraphs () {

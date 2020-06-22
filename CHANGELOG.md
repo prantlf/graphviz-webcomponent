@@ -1,8 +1,9 @@
-# [0.2.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.2.0...v0.1.0) (2020-06-21)
+# [0.2.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.2.0...v0.1.0) (2020-06-22)
 
 ### Features
 
 * Add syntax highglighting for the graph script, add button "Save script" ([06a9b41](https://github.com/prantlf/graphviz-webcomponent/commit/06a9b41c368cc9cba5a8f1ed5780f34693ac0993))
+* Introduce Web component for editing the script source ([d2efcc1](https://github.com/prantlf/graphviz-webcomponent/commit/d2efcc1f574013ebac9e831a6331f92d503fc312))
 
 # [0.1.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.1.0...v0.1.0) (2020-06-15)
 

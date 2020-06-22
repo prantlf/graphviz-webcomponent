@@ -168,17 +168,17 @@ digraph G {
       await waitForContent()
       await expectText('Graphviz not loaded')
     })
-  }
 
-  test('trial update fails without WASM loaded', async () => {
-    try {
-      await page.evaluate(async () => {
-        const graphviz = document.querySelector('graphviz-graph')
-        return graphviz.tryGraph('digraph G {}')
-      })
-      expect(false).toBeTruthy()
-    } catch {
-      await expectText('Graphviz not loaded')
-    }
-  })
+    test('trial update fails without WASM loaded', async () => {
+      try {
+        await page.evaluate(async () => {
+          const graphviz = document.querySelector('graphviz-graph')
+          return graphviz.tryGraph('digraph G {}')
+        })
+        expect(false).toBeTruthy()
+      } catch {
+        await expectText('Graphviz not loaded')
+      }
+    })
+  }
 })

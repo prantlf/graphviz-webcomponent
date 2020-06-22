@@ -161,12 +161,14 @@ digraph G {
     await expectText('Layout was not done')
   })
 
-  test('reports invalid WASM location', async () => {
-    await loadPage('wasm.error')
-    await waitForGlobalErrorEvent()
-    await waitForContent()
-    await expectText('Graphviz not loaded')
-  })
+  if (!process.env.TRAVIS) {
+    test('reports invalid WASM location', async () => {
+      await loadPage('wasm.error')
+      await waitForGlobalErrorEvent()
+      await waitForContent()
+      await expectText('Graphviz not loaded')
+    })
+  }
 
   test('trial update fails without WASM loaded', async () => {
     try {

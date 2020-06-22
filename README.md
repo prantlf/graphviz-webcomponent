@@ -22,29 +22,33 @@ Related tools:
 
 ## Synopsis
 
-```html
-  <graphviz-graph graph="
-    digraph G {
-      main -> parse -> execute;
-      main -> cleanup;
-    }
-  "></graphviz-graph>
-  <script defer src=https://unpkg.com/graphviz-webcomponent@0.2.0/dist/index.min.js></script>
-```
+Render a graph:
 
 ```html
-  <graphviz-script-editor id=source  value="
-    digraph G {
-      main -> parse -> execute;
-      main -> cleanup;
-    }
-  "></graphviz-script-editor>
-  <graphviz-graph id=graph></graphviz-graph>
-  <script type=module>>
-    import 'https://unpkg.com/graphviz-webcomponent@0.2.0/dist/index.min.js'
-    document.getElementById('source').addEventListener('input', event =>
-      document.getElementById('graph').graph = event.details)
-  </script>
+<graphviz-graph graph="
+  digraph G {
+    main -> parse -> execute;
+    main -> cleanup;
+  }
+"></graphviz-graph>
+<script defer src=https://unpkg.com/graphviz-webcomponent@0.2.0/dist/graph.min.js></script>
+```
+
+Show an editor and render the edited content to a graph:
+
+```html
+<graphviz-script-editor id=source  value="
+  digraph G {
+    main -> parse -> execute;
+    main -> cleanup;
+  }
+"></graphviz-script-editor>
+<graphviz-graph id=graph></graphviz-graph>
+<script type=module>>
+  import 'https://unpkg.com/graphviz-webcomponent@0.2.0/dist/index.min.js'
+  document.getElementById('source').addEventListener('input', event =>
+    document.getElementById('graph').graph = event.details)
+</script>
 ```
 
 ## Installation
@@ -57,12 +61,18 @@ yarn add graphviz-webcomponent
 pnpm i graphviz-webcomponent
 ```
 
-If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing wither to CDN or to the local filesystem:
+If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing either to CDN or to the local filesystem:
 
 ```html
 <script src=https://unpkg.com/graphviz-webcomponent@0.2.0/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
+
+Distributed scripts:
+
+* `index.min.js` - both `graphviz-graph` and `graphviz-script-editor` elements
+* `graph.min.js` - the `graphviz-graph` element
+* `script-editor.min.js` - the `graphviz-script-editor` element
 
 ## Elements
 
@@ -121,6 +131,7 @@ Copyright (c) 2020 Ferdinand Prantl
 Licensed under the MIT license.
 
 [on-line]: https://prantlf.github.io/graphviz-webcomponent
+[Graphviz]: https://graphviz.org/
 [WebComponents]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [WebComponent]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [WASM]: https://developer.mozilla.org/en-US/docs/WebAssembly

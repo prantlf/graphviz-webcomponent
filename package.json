@@ -41,11 +41,11 @@
     "preset": "jest-puppeteer",
     "maxWorkers": 4,
     "testMatch": [
-      "**/test/test-*.js"
+      "<rootDir>/test/test-*.js"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "src/*.js"
+      "<rootDir>/src/*.js"
     ],
     "coverageReporters": [
       "json"

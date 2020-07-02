@@ -1,60 +1,48 @@
 const graphKey = Symbol('graph')
 const scaleKey = Symbol('scale')
-const dirtyKey = Symbol('dirty')
-const suspendedKey = Symbol('suspended')
+const { delayWorkerLoading } = window.graphvizWebComponent || {}
+let renderer, rendererUrl, wasmFolder
 
-const pendingElements = new Set()
-let wasmFolder, renderer
+if (!delayWorkerLoading) getRenderer()
 
-function createLoadError () {
-  return new Error('Graphviz not loaded')
+function ensureConfiguration () {
+  if (!rendererUrl) {
+    ({
+      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@0.4.0/dist/renderer.min.js',
+      wasmFolder = 'https://unpkg.com/@hpcc-js/wasm@0.3.14/dist'
+    } = window.graphvizWebComponent || {})
+  }
+}
+
+function getRenderer () {
+  if (!renderer) {
+    ensureConfiguration()
+    renderer = new Worker(rendererUrl)
+  }
+  return renderer
+}
+
+function requestRendering (element, script, receiveResult) {
+  const renderer = getRenderer()
+  renderer.addEventListener('message', receiveResult)
+  const localWasmFolder = element.getAttribute('wasmFolder')
+  if (localWasmFolder) {
+    console.warn('Stop using the deprecated "wasmFolder" attribute. Set the global variable "graphvizWebComponent.wasmFolder" instead.')
+    wasmFolder = localWasmFolder
+  } else {
+    ensureConfiguration()
+  }
+  renderer.postMessage({ script: script || element.graph, wasmFolder })
+  wasmFolder = undefined
+}
+
+function closeRendering (receiveResult) {
+  const renderer = getRenderer()
+  renderer.removeEventListener('message', receiveResult)
 }
 
 function triggerEvent (element, type, detail) {
   element.dispatchEvent(new CustomEvent(type, { detail }))
-}
-
-function updateGraph (element) {
-  if (renderer === undefined) return pendingElements.add(element)
-  element[dirtyKey] = false
-  if (renderer === false) {
-    const error = createLoadError()
-    element.shadowRoot.innerHTML = error.message
-    return triggerEvent(element, 'error', error)
-  }
-  element.shadowRoot.innerHTML = ''
-  const graph = element.graph
-  if (!graph) return
-  renderer
-    .layout(graph, 'svg')
-    .then(svg => {
-      element.shadowRoot.innerHTML = svg
-      applyScale(element)
-      triggerEvent(element, 'render', svg)
-    })
-    .catch(error => {
-      error.message = error.message.trim()
-      console.error('Graphviz failed:', error)
-      element.shadowRoot.innerHTML = error.message
-      triggerEvent(element, 'error', error)
-    })
-}
-
-async function tryUpdateGraph (element, graph) {
-  if (renderer === undefined || renderer === false) throw createLoadError()
-  if (!graph) return
-  return renderer
-    .layout(graph, 'svg')
-    .then(svg => {
-      element[suspendedKey] = true
-      element.graph = graph
-      element[dirtyKey] = false
-      element[suspendedKey] = false
-      element.shadowRoot.innerHTML = svg
-      applyScale(element)
-      triggerEvent(element, 'render', svg)
-      return svg
-    })
 }
 
 function applyScale (element) {
@@ -66,41 +54,58 @@ function applyScale (element) {
   }
 }
 
-function renderPendingGraphs () {
-  for (const element of pendingElements) updateGraph(element)
-  pendingElements.clear()
+function showImage (element, svg) {
+  element.shadowRoot.innerHTML = svg
+  applyScale(element)
+  triggerEvent(element, 'render', svg)
 }
 
-function enableRenderer () {
-  const { wasmFolder: setWasmFolder, graphviz } = window['@hpcc-js/wasm']
-  renderer = graphviz
-  setWasmFolder(wasmFolder)
-  triggerEvent(document, 'GraphvizLoaded', wasmFolder)
-  renderPendingGraphs()
+function showError (element, error) {
+  console.error('Graphviz failed:', error)
+  element.shadowRoot.innerHTML = error.message
+  return triggerEvent(element, 'error', error)
 }
 
-function disableRenderer () {
-  renderer = false
-  triggerEvent(document, 'error', createLoadError())
-  renderPendingGraphs()
+function updateGraph (element) {
+  element.shadowRoot.innerHTML = ''
+  if (!element.graph) return
+  requestRendering(element, undefined, receiveResult)
+
+  function receiveResult ({ data }) {
+    const { svg, error } = data
+    closeRendering(receiveResult)
+    if (error) {
+      error.message = error.message.trim()
+      return showError(element, error)
+    }
+    showImage(element, svg)
+  }
 }
 
-function loadRenderer (element) {
-  if (wasmFolder) return
-  wasmFolder = element.getAttribute('wasmFolder') || 'https://unpkg.com/@hpcc-js/wasm@0.3.14/dist'
-  const script = document.createElement('script')
-  script.src = `${wasmFolder}/index.min.js`
-  script.defer = true
-  script.addEventListener('load', enableRenderer)
-  script.addEventListener('error', disableRenderer)
-  document.head.appendChild(script)
+function tryUpdateGraph (element, script) {
+  return new Promise((resolve, reject) => {
+    if (!script) {
+      element[graphKey] = ''
+      element.shadowRoot.innerHTML = ''
+      return resolve()
+    }
+    requestRendering(element, script, receiveResult)
+
+    function receiveResult ({ data }) {
+      const { svg, error } = data
+      closeRendering(receiveResult)
+      if (error) return reject(error)
+      element[graphKey] = script
+      showImage(element, svg)
+      resolve(svg)
+    }
+  })
 }
 
 class GraphvizGraphElement extends HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
-    loadRenderer(this)
   }
 
   get graph () { return this[graphKey] }
@@ -113,20 +118,12 @@ class GraphvizGraphElement extends HTMLElement {
     switch (name) {
       case 'graph':
         this[graphKey] = newValue
-        if (this.isConnected) {
-          if (!this[suspendedKey]) updateGraph(this)
-        } else {
-          this[dirtyKey] = true
-        }
+        updateGraph(this)
         break
       case 'scale':
         this[scaleKey] = newValue
         applyScale(this)
     }
-  }
-
-  connectedCallback () {
-    if (this[dirtyKey]) updateGraph(this)
   }
 
   tryGraph (graph) {

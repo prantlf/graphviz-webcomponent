@@ -31,7 +31,7 @@ Render a graph:
     main -> cleanup;
   }
 "></graphviz-graph>
-<script defer src=https://unpkg.com/graphviz-webcomponent@0.3.1/dist/graph.min.js></script>
+<script defer src=https://unpkg.com/graphviz-webcomponent@0.4.0/dist/graph.min.js></script>
 ```
 
 Show an editor and render the edited content to a graph:
@@ -45,7 +45,7 @@ Show an editor and render the edited content to a graph:
 "></graphviz-script-editor>
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>>
-  import 'https://unpkg.com/graphviz-webcomponent@0.3.1/dist/index.min.js'
+  import 'https://unpkg.com/graphviz-webcomponent@0.4.0/dist/index.min.js'
   document.getElementById('source').addEventListener('input', event =>
     document.getElementById('graph').graph = event.details)
 </script>
@@ -64,7 +64,7 @@ pnpm i graphviz-webcomponent
 If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing either to CDN or to the local filesystem:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@0.3.1/dist/index.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@0.4.0/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
 
@@ -73,6 +73,7 @@ Distributed scripts:
 * `index.min.js` - both `graphviz-graph` and `graphviz-script-editor` elements
 * `graph.min.js` - the `graphviz-graph` element
 * `script-editor.min.js` - the `graphviz-script-editor` element
+* `renderer.min.js` - web worker for the `graphviz-graph` element
 
 ## Elements
 
@@ -81,14 +82,12 @@ Distributed scripts:
 The custom element `graphviz-graph` generates an SVG and displays it in its shadow root.
 
 ```html
-<graphviz-graph graph="..." wasmFolder="..." scale="..."></graphviz-graph>
+<graphviz-graph graph="..." scale="..."></graphviz-graph>
 ```
 
 #### Attributes
 
 The attribute `graph` supplies the graph script in the [Graphviz] format. It can span over multiple lines. Do not forget to escape ampersand, quotation marks and other sensitive characters by HTML entities. Whenever the `graph` attribute changes, the graph will be re-generated and re-rendered. If it is empty, the `graphviz-graph` will be empty. If rendering of the graph image fails, the element will display the error message.
-
-The attribute `wasmFolder` can specify URL to the directory where `@hpcc-js/wasm` is deployed. The default value is `https://unpkg.com/@hpcc-js/wasm@0.3.14/dist`. If this attribute is used, all `graphviz-graph` have to contain the same value and this value has to be set when the elements are created. Later changes of this attribute will have no effect.
 
 The attribute `scale` sets the "zoom" level to the SVG content. It has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.
 
@@ -96,11 +95,36 @@ The attribute `scale` sets the "zoom" level to the SVG content. It has to be con
 
 Whenever the SVG inside the `graphviz-graph` element is successfully updated, the custom event `render` with the SVG source as details will be triggered on the element. If the rendering fails, the custom event `error` with the `Error` instance as details will be triggered.
 
-The very first `graphviz-graph` element will load [@hpcc-js/wasm] and once it succeeds, the custom event `GraphvizLoaded` will be triggered on `document` with the source [@hpcc-js/wasm] directory as details. If the loading fails, the custom event `error` with the `Error` instance as details will be triggered.
-
 #### Methods
 
 The method `tryGraph(graph: string): Promise<string>` can be called to conditionally set the `graph` attribute. If rendering the graph script succeeds, the input value will be set to the `graph` attribute, the `graphviz-graph` element will be updated (including triggering the `render` event) and the Promise will be resolved with the output SVG. If rendering the graph script fails, the `graphviz-graph` element will remain unchanged (no `error` event triggered) and the Promise will be rejected with the error.
+
+#### Configuration
+
+The `graphviz-graph` element uses a [Web Worker] to perform the rendering in the background and [WASM] to improve the computation performance. These two external scripts are loaded from URLs, which can be customized. The defaults are:
+
+```js
+graphvizWebComponent = {
+  rendererUrl: 'https://unpkg.com/graphviz-webcomponent@0.4.0/dist/index.min.js',
+  wasmFolder: 'https://unpkg.com/@hpcc-js/wasm@0.3.14/dist',
+  delayWorkerLoading: false
+}
+```
+
+The global object `graphvizWebComponent` can be set *before the `graphviz-webcomponent` scripts (`index.min.js` or `graph.min.js`) are imported* to change the defaults. Changing the properties after the sctips are loaded will have no effect.
+
+If you set `graphvizWebComponent.delayWorkerLoading` to true, the web worker will be downloaded when the first `graphviz-graph` element will be inserted to the page.
+
+If you want to enforce only local resources, you can change the URLsto relative paths within your project by setting the global `graphvizWebComponent` object, for example:
+
+```html
+<script>
+  graphvizWebComponent = {
+    rendererUrl: '../node_modules/graphviz-webcomponent/dist/renderer.min.js',
+    wasmFolder: '../node_modules/@hpcc-js/wasm/dist'
+  }
+</script>
+```
 
 ### graphviz-script-editor
 
@@ -136,6 +160,7 @@ Licensed under the MIT license.
 [Graphviz]: https://graphviz.org/
 [WebComponents]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [WebComponent]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
+[Web Worker]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API
 [WASM]: https://developer.mozilla.org/en-US/docs/WebAssembly
 [@hpcc-js/wasm]: https://github.com/hpcc-systems/hpcc-js-wasm#readme
 [graphviz-builder]: https://github.com/prantlf/graphviz-builder#readme

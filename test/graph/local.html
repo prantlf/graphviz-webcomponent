@@ -20,6 +20,13 @@ digraph G {
   execute -> compare;
 }
   "></graphviz-graph>
+  <script>
+    graphvizWebComponent = {
+      rendererUrl: '../../dist/renderer.min.js',
+      wasmFolder: '../../node_modules/@hpcc-js/wasm/dist',
+      delayWorkerLoading: true
+    }
+  </script>
   <script defer src=../../dist/index.min.js></script>
 </body>
 </html>

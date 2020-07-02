@@ -1,10 +1,6 @@
 /* global describe test expect page */
 
-const root = 'http://localhost:5000/test/script-editor'
-
-async function loadPage (name) {
-  await page.goto(`${root}/${name}.html`, { waitUntil: 'domcontentloaded' })
-}
+const { loadPage } = require('./support')
 
 async function waitForContent (name) {
   await page.waitForFunction(() => {
@@ -24,7 +20,7 @@ async function expectScript (name) {
 
 describe('graphviz-script-editor', () => {
   test('shows initialized script', async () => {
-    await loadPage('initialized')
+    await loadPage('script-editor', 'initialized')
     await waitForContent()
     await expectScript('G')
   })
@@ -129,6 +125,7 @@ describe('graphviz-script-editor', () => {
     })
   })
 
+  // Fails with "DOMException: Failed to execute 'getRangeAt' on 'Selection': 0 is not a valid index."
   // test('typing updates', async () => {
   //   await page.evaluate(async () => {
   //     const graphviz = document.querySelector('graphviz-script-editor')

@@ -1,12 +1,15 @@
 /* global describe test expect page */
 
-const root = 'http://localhost:5000/test/graph'
+const { loadPage } = require('./support')
 
-async function loadPage (name) {
-  await page.goto(`${root}/${name}.html`, { waitUntil: 'domcontentloaded' })
+function tryGraph (script) {
+  return page.evaluate(async script => {
+    const graphviz = document.querySelector('graphviz-graph')
+    return graphviz.tryGraph(script)
+  }, script)
 }
 
-async function waitForContent (name) {
+async function waitForContent () {
   await page.waitForFunction(() => {
     const graphviz = document.querySelector('graphviz-graph')
     return graphviz && graphviz.shadowRoot.innerHTML !== ''
@@ -37,33 +40,22 @@ async function waitForErrorEvent () {
     }))
 }
 
-async function waitForGlobalErrorEvent () {
-  await page.evaluate(() =>
-    new Promise(resolve => {
-      function onRender () {
-        document.removeEventListener('error', onRender)
-        resolve()
-      }
-      document.addEventListener('error', onRender)
-    }))
-}
-
 function getContent () {
   return page.evaluate(() =>
     document.querySelector('graphviz-graph').shadowRoot.innerHTML)
 }
 
-async function expectSVG () {
-  expect(await getContent()).toContain('<svg')
+async function expectText (text) {
+  expect(await getContent()).toContain(text)
 }
 
-async function expectText (text) {
-  expect(await getContent()).toBe(text)
+function expectSVG () {
+  return expectText('<svg')
 }
 
 describe('graphviz-graph', () => {
   test('loads local @hpcc-js/wasm', async () => {
-    await loadPage('local')
+    await loadPage('graph', 'local')
     await waitForRenderEvent()
     await waitForContent()
     await expectSVG()
@@ -92,6 +84,29 @@ digraph G {
     expect(first).not.toBe(second)
   })
 
+  test('does not perform trial update with invalid input', async () => {
+    try {
+      await tryGraph('invalid')
+      expect(false).toBeTruthy()
+    } catch {
+      await expectSVG()
+    }
+  })
+
+  test('performs trial update with empty input', async () => {
+    await tryGraph('')
+    expect(await getContent()).toBe('')
+  })
+
+  test('performs trial update with valid input', async () => {
+    await tryGraph(`
+digraph G {
+  main -> parse -> execute;
+  main -> cleanup;
+}`)
+    await expectSVG()
+  })
+
   test('stays empty for empty graph', async () => {
     await page.evaluate(() => {
       document.querySelector('graphviz-graph').graph = ''
@@ -100,61 +115,19 @@ digraph G {
     expect(await getContent()).toBe('')
   })
 
-  test('updates on re-appending to DOM, not outside DOM', async () => {
-    const { contentOutside, contentInside } = await page.evaluate(async () => {
-      const graphviz = document.querySelector('graphviz-graph')
-      document.body.removeChild(graphviz)
-      graphviz.graph = `
-digraph G {
-  main -> parse -> execute;
-  main -> cleanup;
-}`
-      await new Promise(resolve => setTimeout(resolve, 100))
-      const contentOutside = graphviz.shadowRoot.innerHTML
-      return new Promise(resolve => {
-        function onRender () {
-          graphviz.removeEventListener('render', onRender)
-          resolve({ contentOutside, contentInside: graphviz.shadowRoot.innerHTML })
-        }
-        graphviz.addEventListener('render', onRender)
-        document.body.appendChild(graphviz)
-      })
-    })
-    expect(contentOutside).toBe('')
-    expect(contentInside).toContain('<svg')
-  })
-
-  test('does not perform trial update with invalid input', async () => {
-    try {
-      await page.evaluate(async () => {
-        const graphviz = document.querySelector('graphviz-graph')
-        return graphviz.tryGraph('invalid')
-      })
-      expect(false).toBeTruthy()
-    } catch {
-      expectSVG()
-    }
-  })
-
-  test('performs trial update with valid input', async () => {
-    await page.evaluate(() => {
-      const graphviz = document.querySelector('graphviz-graph')
-      return graphviz.tryGraph(`
-digraph G {
-  main -> parse -> execute;
-  main -> cleanup;
-}`)
-    })
-  })
-
   test('loads remote @hpcc-js/wasm', async () => {
-    await loadPage('remote')
+    await loadPage('graph', 'remote')
     await waitForRenderEvent()
     await waitForContent()
     await expectSVG()
   })
 
   test('changes image scale', async () => {
+    const scale = await page.evaluate(() => {
+      const graphviz = document.querySelector('graphviz-graph')
+      return graphviz.scale
+    })
+    expect(scale).toBeUndefined()
     const transform = await page.evaluate(() => {
       const graphviz = document.querySelector('graphviz-graph')
       graphviz.scale = '0.8'
@@ -164,30 +137,25 @@ digraph G {
   })
 
   test('reports typo in graph script', async () => {
-    await loadPage('graph.error')
+    await loadPage('graph', 'graph.error')
     await waitForErrorEvent()
     await waitForContent()
     await expectText('Layout was not done')
   })
 
-  if (!process.env.TRAVIS) {
-    test('reports invalid WASM location', async () => {
-      await loadPage('wasm.error')
-      await waitForGlobalErrorEvent()
-      await waitForContent()
-      await expectText('Graphviz not loaded')
-    })
+  test('reports invalid WASM location', async () => {
+    await loadPage('graph', 'wasm.error')
+    await waitForErrorEvent()
+    await waitForContent()
+    await expectText('Graphviz failed')
+  })
 
-    test('trial update fails without WASM loaded', async () => {
-      try {
-        await page.evaluate(async () => {
-          const graphviz = document.querySelector('graphviz-graph')
-          return graphviz.tryGraph('digraph G {}')
-        })
-        expect(false).toBeTruthy()
-      } catch {
-        await expectText('Graphviz not loaded')
-      }
-    })
-  }
+  test('trial update fails without WASM loaded', async () => {
+    try {
+      await tryGraph('digraph G {}')
+      expect(false).toBeTruthy()
+    } catch {
+      await expectText('Graphviz failed')
+    }
+  })
 })

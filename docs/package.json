@@ -2,8 +2,8 @@
   "name": "graphviz-webcomponent-docs",
   "private": true,
   "scripts": {
-    "lint": "../node_modules/.bin/eslint --cache --max-warnings=0 js/index.js js/prism-graphviz.js",
-    "fix": "../node_modules/.bin/eslint --fix --cache --max-warnings=0 js/index.js js/prism-graphviz.js",
+    "lint": "../node_modules/.bin/eslint --cache --max-warnings=0 js/index.js",
+    "fix": "../node_modules/.bin/eslint --fix --cache --max-warnings=0 js/index.js",
     "build:dev": "NODE_ENV=development ../node_modules/.bin/rollup -c",
     "build:prod": "NODE_ENV=production ../node_modules/.bin/rollup -c",
     "dev": "../node_modules/.bin/rollup -c -w",

@@ -1,6 +1,3 @@
-import { css } from 'lit-element'
-
-export default css`
 pre[data-line] {
 	position: relative;
 	padding: 1em 0 1em 3em;
@@ -50,4 +47,3 @@ pre[data-line] {
 .line-numbers .line-highlight:after {
 	content: none;
 }
-`

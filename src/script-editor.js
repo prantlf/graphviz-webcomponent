@@ -1,9 +1,10 @@
-import { LitElement, html, css } from 'lit-element'
+import { LitElement, html, css, unsafeCSS } from 'lit-element'
+import mainStyle from './script-editor.css'
 import { CodeJar } from './codejar/codejar'
 import Prism from './prism/prism-core'
-import lightTheme from './prism/prism-light.style'
-import lineNumbersStyle from './prism/prism-line-numbers.style'
-import matchBracesStyle from './prism/prism-match-braces.style'
+import lightTheme from './prism/prism-light.css'
+import lineNumbersStyle from './prism/prism-line-numbers.css'
+import matchBracesStyle from './prism/prism-match-braces.css'
 import './prism/prism-line-numbers'
 import './prism/prism-match-braces'
 import './prism/prism-graphviz'
@@ -110,33 +111,12 @@ class GraphvizScriptEditorElement extends LitElement {
   }
 
   static get styles () {
-    return [lightTheme, lineNumbersStyle, matchBracesStyle, css`:host {
-  display: block;
-  border: 1px black solid;
-  border-radius: .5ex;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  resize: both;
-  overflow: auto;
-}
-
-#source-wrapper {
-  width: calc(100% - 2em - 2px);
-  height: calc(100% - 2px);
-  padding-top: 0;
-  padding-bottom: 0;
-  white-space: pre-wrap;
-}
-
-#source-wrapper.line-numbers {
-  width: calc(100% - 4.8em - 2px);
-  margin: 0;
-}
-
-#source {
-  font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Ubuntu Mono", "Liberation Mono", "Lucida Console", "Courier New", monospace;
-  tab-size: 2;
-  overflow-y: visible !important;
-}`]
+    return [
+      css`${unsafeCSS(lightTheme)}`,
+      css`${unsafeCSS(lineNumbersStyle)}`,
+      css`${unsafeCSS(matchBracesStyle)}`,
+      css`${unsafeCSS(mainStyle)}`
+    ]
   }
 }
 

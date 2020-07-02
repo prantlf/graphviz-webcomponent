@@ -65,7 +65,7 @@ function displayError () {
   clearTimeout(remainingError)
   remainingError = undefined
   if (pendingUpdate || runningUpdate || !lastError) return
-  graph.graph = jar.toString()
+  graph.graph = source.value
 }
 
 function scheduleDisplayError () {

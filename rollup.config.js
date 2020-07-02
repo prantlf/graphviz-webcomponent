@@ -1,11 +1,15 @@
 import resolve from '@rollup/plugin-node-resolve'
 import livereload from 'rollup-plugin-livereload'
-import babel from '@rollup/plugin-babel'
+import istanbul from 'rollup-plugin-istanbul'
 import { terser } from 'rollup-plugin-terser'
+import { string } from 'rollup-plugin-string'
 import { spawn } from 'child_process'
 
 const watch = process.env.ROLLUP_WATCH
 const coverage = process.env.NODE_ENV === 'development'
+const instanbulOptions = { exclude: ['src/codejar/*', 'src/prism/*', 'test/**/*.js'] }
+const terserOptions = { output: { comments: false } }
+const stringOptions = { include: '**/*.css' }
 
 export default [
   {
@@ -17,13 +21,11 @@ export default [
     },
     plugins: [
       resolve(),
-      coverage && babel({
-        babelHelpers: 'bundled',
-        plugins: ['istanbul']
-      }),
+      string(stringOptions),
+      coverage && istanbul(instanbulOptions),
       watch && serve(),
       watch && livereload('.'),
-      !(watch || coverage) && terser({ output: { comments: false } })
+      !(watch || coverage) && terser(terserOptions)
     ],
     watch: { clearScreen: false }
   },
@@ -34,7 +36,7 @@ export default [
       format: 'iife',
       file: 'dist/graph.min.js'
     },
-    plugins: [terser({ output: { comments: false } })]
+    plugins: [terser(terserOptions)]
   },
   {
     input: 'src/script-editor.js',
@@ -43,7 +45,24 @@ export default [
       format: 'iife',
       file: 'dist/script-editor.min.js'
     },
-    plugins: [resolve(), terser({ output: { comments: false } })]
+    plugins: [
+      resolve(),
+      string(stringOptions),
+      terser(terserOptions)
+    ]
+  },
+  {
+    input: 'src/renderer.js',
+    output: {
+      sourcemap: true,
+      format: 'es',
+      file: 'dist/renderer.min.js'
+    },
+    plugins: [
+      resolve(),
+      coverage && istanbul(instanbulOptions),
+      !(watch || coverage) && terser(terserOptions)
+    ]
   }
 ]
 

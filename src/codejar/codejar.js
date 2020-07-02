@@ -1,5 +1,12 @@
 export function CodeJar(editor, highlight, opt = {}) {
     const options = Object.assign({ tab: "\t", ownerRoot: window }, opt);
+    // only Chrome supports shadowRoot.getSelection
+    if (typeof options.ownerRoot.getSelection !== 'function') {
+        options.ownerRoot = options.ownerRoot.ownerDocument;
+        if (typeof options.ownerRoot.getSelection !== 'function') {
+            throw new Error('Impossible to access text selections.');
+        }
+    }
     let listeners = [];
     let history = [];
     let at = -1;

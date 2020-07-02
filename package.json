@@ -29,7 +29,7 @@
     "lint": "eslint --cache --max-warnings=0 *.js --ignore-pattern=codejar --ignore-pattern=prism src test",
     "fix": "eslint --fix --cache --max-warnings=0 --ignore-pattern=codejar --ignore-pattern=prism *.js src test",
     "build:dev": "NODE_ENV=development rollup -c",
-    "build:prod": "NODE_ENV=production rollup -c",
+    "build:prod": "NODE_ENV=production rollup -c && cp dist/renderer.min.* docs/js/ && cp dist/index.min.* docs/js/",
     "dev": "rollup -c -w",
     "start": "http-server -p 5000",
     "check": "NODE_ENV=development jest",

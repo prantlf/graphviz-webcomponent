@@ -1,3 +1,9 @@
+## [0.4.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.3.1...v0.4.0) (2020-07-02)
+
+## Features
+
+* Render the graph by a web worker, configure it by a global object ([6833d6c](https://github.com/prantlf/graphviz-webcomponent/commit/6833d6c66308c44197c19a6bfb6a062dd0f6556d))
+
 ## [0.3.1](https://github.com/prantlf/graphviz-webcomponent/compare/v0.3.0...v0.3.1) (2020-06-22)
 
 ## Bug Fixes

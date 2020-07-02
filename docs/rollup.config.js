@@ -1,18 +1,18 @@
 import resolve from '@rollup/plugin-node-resolve'
 import livereload from 'rollup-plugin-livereload'
-import { terser } from 'rollup-plugin-terser'
 import postcss from 'rollup-plugin-postcss'
+import { terser } from 'rollup-plugin-terser'
 import { spawn } from 'child_process'
 
 const watch = process.env.ROLLUP_WATCH
 
 export default [
   {
-    input: 'js/index.js',
+    input: 'js/page.js',
     output: {
       sourcemap: true,
       format: 'iife',
-      file: 'js/index.min.js'
+      file: 'js/page.min.js'
     },
     plugins: [
       resolve(),
@@ -23,8 +23,8 @@ export default [
     watch: { clearScreen: false }
   },
   {
-    input: 'css/index.css',
-    output: { file: 'css/index.min.css' },
+    input: 'css/page.css',
+    output: { file: 'css/page.min.css' },
     plugins: [
       postcss({
         extract: true,

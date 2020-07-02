@@ -1,3 +1,9 @@
+## [0.4.1](https://github.com/prantlf/graphviz-webcomponent/compare/v0.4.0...v0.4.1) (2020-07-02)
+
+## Bug Fixes
+
+* Correct the access to the text selection to enable running in Firefox ([c9f3649](https://github.com/prantlf/graphviz-webcomponent/commit/c9f3649e7fd30b59da14ba094cc46a3c01f9c6b1))
+
 ## [0.4.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.3.1...v0.4.0) (2020-07-02)
 
 ## Features

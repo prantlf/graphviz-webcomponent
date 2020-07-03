@@ -1,3 +1,9 @@
+## [0.4.2](https://github.com/prantlf/graphviz-webcomponent/compare/v0.4.1...v0.4.2) (2020-07-03)
+
+## Performance
+
+* Drop the dependency on lit-html to shrink the size by 20 KB ([43306a8](https://github.com/prantlf/graphviz-webcomponent/commit/43306a83bb9e1fefa89f1c6631e2a621683d55b9))
+
 ## [0.4.1](https://github.com/prantlf/graphviz-webcomponent/compare/v0.4.0...v0.4.1) (2020-07-02)
 
 ## Bug Fixes

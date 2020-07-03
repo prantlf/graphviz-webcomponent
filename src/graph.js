@@ -3,7 +3,7 @@ const scaleKey = Symbol('scale')
 const { delayWorkerLoading } = window.graphvizWebComponent || {}
 let renderer, rendererUrl, wasmFolder
 
-if (!delayWorkerLoading) getRenderer()
+if (!delayWorkerLoading) setTimeout(getRenderer)
 
 function ensureConfiguration () {
   if (!rendererUrl) {

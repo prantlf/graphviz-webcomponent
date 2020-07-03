@@ -37,7 +37,7 @@ Render a graph:
 Show an editor and render the edited content to a graph:
 
 ```html
-<graphviz-script-editor id=source  value="
+<graphviz-script-editor id=source value="
   digraph G {
     main -> parse -> execute;
     main -> cleanup;

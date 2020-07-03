@@ -8,7 +8,7 @@ if (!delayWorkerLoading) getRenderer()
 function ensureConfiguration () {
   if (!rendererUrl) {
     ({
-      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@0.4.1/dist/renderer.min.js',
+      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@0.4.2/dist/renderer.min.js',
       wasmFolder = 'https://unpkg.com/@hpcc-js/wasm@0.3.14/dist'
     } = window.graphvizWebComponent || {})
   }

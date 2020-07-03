@@ -34,7 +34,7 @@ Render a graph:
 <script defer src=https://unpkg.com/graphviz-webcomponent@0.4.2/dist/graph.min.js></script>
 ```
 
-Show an editor and render the edited content to a graph:
+Show a script editor and render the edited content to a graph:
 
 ```html
 <graphviz-script-editor id=source value="
@@ -45,7 +45,7 @@ Show an editor and render the edited content to a graph:
 "></graphviz-script-editor>
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>>
-  import 'https://unpkg.com/graphviz-webcomponent@0.4.2/dist/index.min.js'
+  import 'https://unpkg.com/graphviz-webcomponent@0.4.2/dist/index.min.mjs'
   document.getElementById('source').addEventListener('input', event =>
     document.getElementById('graph').graph = event.details)
 </script>
@@ -74,6 +74,8 @@ Distributed scripts:
 * `graph.min.js` - the `graphviz-graph` element
 * `script-editor.min.js` - the `graphviz-script-editor` element
 * `renderer.min.js` - web worker for the `graphviz-graph` element
+
+The first three scripts are available as ES6 modules with the file extension `.mjs` too. They export the HTML elements as classes.
 
 ## Elements
 

@@ -14,11 +14,18 @@ const stringOptions = { include: '**/*.css' }
 export default [
   {
     input: 'src/index.js',
-    output: {
-      sourcemap: true,
-      format: 'iife',
-      file: 'dist/index.min.js'
-    },
+    output: [
+      {
+        sourcemap: true,
+        format: 'iife',
+        file: 'dist/index.min.js'
+      },
+      {
+        sourcemap: true,
+        format: 'es',
+        file: 'dist/index.min.mjs'
+      }
+    ],
     plugins: [
       resolve(),
       string(stringOptions),
@@ -31,20 +38,34 @@ export default [
   },
   {
     input: 'src/graph.js',
-    output: {
-      sourcemap: true,
-      format: 'iife',
-      file: 'dist/graph.min.js'
-    },
+    output: [
+      {
+        sourcemap: true,
+        format: 'iife',
+        file: 'dist/graph.min.js'
+      },
+      {
+        sourcemap: true,
+        format: 'es',
+        file: 'dist/graph.min.mjs'
+      }
+    ],
     plugins: [terser(terserOptions)]
   },
   {
     input: 'src/script-editor.js',
-    output: {
-      sourcemap: true,
-      format: 'iife',
-      file: 'dist/script-editor.min.js'
-    },
+    output: [
+      {
+        sourcemap: true,
+        format: 'iife',
+        file: 'dist/script-editor.min.js'
+      },
+      {
+        sourcemap: true,
+        format: 'es',
+        file: 'dist/script-editor.min.mjs'
+      }
+    ],
     plugins: [
       resolve(),
       string(stringOptions),

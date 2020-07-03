@@ -185,3 +185,5 @@ function scheduleUpdateAllLineNumbers () {
 window.addEventListener('resize', scheduleUpdateAllLineNumbers)
 
 customElements.define('graphviz-script-editor', GraphvizScriptEditorElement)
+
+export default GraphvizScriptEditorElement

@@ -139,3 +139,5 @@ class GraphvizGraphElement extends HTMLElement {
 }
 
 customElements.define('graphviz-graph', GraphvizGraphElement)
+
+export default GraphvizGraphElement

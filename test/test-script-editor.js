@@ -28,10 +28,21 @@ describe('graphviz-script-editor', () => {
   test('updates on feature class removal', async () => {
     const classes = await page.evaluate(() => {
       const graphviz = document.querySelector('graphviz-script-editor')
+      const source = graphviz.shadowRoot.getElementById('source')
       graphviz.classList.remove('rainbow-braces')
-      return graphviz.shadowRoot.children[0].className
+      return source.className
     })
     expect(classes).not.toContain('rainbow-braces')
+  })
+
+  test('ignores non-feature classes', async () => {
+    const classes = await page.evaluate(() => {
+      const graphviz = document.querySelector('graphviz-script-editor')
+      const source = graphviz.shadowRoot.getElementById('source')
+      graphviz.className = `${graphviz.className} test`
+      return source.className
+    })
+    expect(classes).not.toContain('test')
   })
 
   test('updates script', async () => {
@@ -108,9 +119,9 @@ describe('graphviz-script-editor', () => {
   test('resizing window re-renders', async () => {
     await page.evaluate(async () => {
       triggerResizeEvent()
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await waitForTime(10)
       triggerResizeEvent()
-      await new Promise(resolve => setTimeout(resolve, 350))
+      await waitForTime(350)
 
       function triggerResizeEvent () {
         const event = new Event('resize', {
@@ -122,26 +133,36 @@ describe('graphviz-script-editor', () => {
         })
         window.dispatchEvent(event)
       }
+
+      function waitForTime (milliseconds) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+      }
     })
   })
 
-  // Fails with "DOMException: Failed to execute 'getRangeAt' on 'Selection': 0 is not a valid index."
+  // Fails with "DOMException: Failed to execute 'getRangeAt' on 'Selection': 0 is not a valid index.""
   // test('typing updates', async () => {
   //   await page.evaluate(async () => {
   //     const graphviz = document.querySelector('graphviz-script-editor')
+  //     const source = graphviz.shadowRoot.getElementById('source')
   //     triggerKeyboardEvent('keydown')
   //     triggerKeyboardEvent('keyup')
-  //     await new Promise(resolve => setTimeout(resolve, 100))
+  //     await waitForTime(100)
+
   //     function triggerKeyboardEvent (type) {
   //       const event = new KeyboardEvent(type, {
-  //         bubbles : true,
-  //         cancelable : true,
-  //         char : 'G',
-  //         key : 'g',
-  //         shiftKey : true,
-  //         keyCode : 71
+  //         bubbles: true,
+  //         cancelable: true,
+  //         char: 'G',
+  //         key: 'g',
+  //         shiftKey: true,
+  //         keyCode: 71
   //       })
-  //       graphviz.shadowRoot.children[0].children[0].dispatchEvent(event)
+  //       source.dispatchEvent(event)
+  //     }
+
+  //     function waitForTime (milliseconds) {
+  //       return new Promise(resolve => setTimeout(resolve, milliseconds))
   //     }
   //   })
   // })

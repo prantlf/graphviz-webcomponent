@@ -12,8 +12,8 @@
 
 Features:
 
-* Lightweight [WebComponents] (graph 1.7 kB minified, 0.8 kB gzipped, script editor 42.5 kB minified, 14.7 kB gzipped).
-* Renderer downloaded in the background (1.1 MB minified, 440 kB gzipped).
+* Lightweight [WebComponents] (graph 2.0 kB minified, 0.9 kB gzipped, script editor 24.6 kB minified, 9.2 kB gzipped).
+* Renderer downloaded in the background (1.0 MB minified, 472.9 kB gzipped).
 
 Related tools:
 
@@ -87,7 +87,7 @@ The custom element `graphviz-graph` generates an SVG and displays it in its shad
 
 #### Attributes
 
-The attribute `graph` supplies the graph script in the [Graphviz] format. It can span over multiple lines. Do not forget to escape ampersand, quotation marks and other sensitive characters by HTML entities. Whenever the `graph` attribute changes, the graph will be re-generated and re-rendered. If it is empty, the `graphviz-graph` will be empty. If rendering of the graph image fails, the element will display the error message.
+The attribute `graph` supplies the graph script in the [Graphviz] format. Whenever the `graph` attribute changes, the graph will be re-generated and re-rendered. If it is empty, the `graphviz-graph` will be empty. If rendering of the graph image fails, the element will display the error message.
 
 The attribute `scale` sets the "zoom" level to the SVG content. It has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.
 
@@ -136,7 +136,7 @@ The custom element `graphviz-script-editor` shows a graph script with syntax hig
 
 #### Attributes
 
-The attribute `value` accepts the graph script in the [Graphviz] format. It can span over multiple lines. Do not forget to escape ampersand, quotation marks and other sensitive characters by HTML entities. Whenever the `value` attribute changes, the editor will be re-rendered. The `value` attribute reflects the immediate changes made in the editor.
+The attribute `value` accepts the graph script in the [Graphviz] format. Whenever the `value` attribute changes, the editor will be re-rendered. The `value` attribute reflects the immediate changes made in the editor.
 
 The attribute `tab` can specify characters inserted when the `Tab` key is pressed. It is two spaces (`"  "`) by default.
 

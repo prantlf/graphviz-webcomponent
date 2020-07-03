@@ -47,10 +47,15 @@ function triggerEvent (element, type, detail) {
 
 function applyScale (element) {
   const svg = element.shadowRoot.children[0]
-  const scale = element[scaleKey]
-  if (svg && scale) {
-    svg.style.transform = `scale(${scale})`
-    svg.style.transformOrigin = 'top left'
+  const scale = element.scale
+  if (svg) {
+    if (scale) {
+      svg.style.transform = `scale(${scale})`
+      svg.style.transformOrigin = 'top left'
+    } else {
+      svg.style.transform = ''
+      svg.style.transformOrigin = ''
+    }
   }
 }
 

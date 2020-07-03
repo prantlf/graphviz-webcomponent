@@ -9,11 +9,10 @@ devDependencies:
   eslint-plugin-standard: 4.0.1_eslint@7.3.1
   http-server: 0.12.3
   jest-cli: 26.1.0
-  jest-puppeteer: 4.4.0_puppeteer@4.0.1
-  jest-puppeteer-istanbul: 0.5.3_puppeteer@4.0.1
-  lit-element: 2.3.1
+  jest-puppeteer: 4.4.0_puppeteer@5.0.0
+  jest-puppeteer-istanbul: 0.5.3_puppeteer@5.0.0
   nyc: 15.1.0
-  puppeteer: 4.0.1
+  puppeteer: 5.0.0
   rollup: 2.18.2
   rollup-plugin-istanbul: 2.0.1
   rollup-plugin-livereload: 1.3.0
@@ -3304,20 +3303,20 @@ packages:
         optional: true
     resolution:
       integrity: sha512-pgFw2tm54fzgYvc/OHrnysABEObZCUNFnhjoRjaVOCN8NYc032/gVjPaHD4Aq6ApkSieWtfKAFQtmDKAmhupnQ==
-  /jest-puppeteer-istanbul/0.5.3_puppeteer@4.0.1:
+  /jest-puppeteer-istanbul/0.5.3_puppeteer@5.0.0:
     dependencies:
-      puppeteer: 4.0.1
+      puppeteer: 5.0.0
     dev: true
     peerDependencies:
       jest: '>=24.0.0'
       puppeteer: '>=1.10.0'
     resolution:
       integrity: sha512-0+dcUeFsgoKv7Gcufl6rfxFl9YC6vrVupeqJRWmUxijBj9BM0nPOqb55O+G90JJYv2aTejFcl96FR1eCI+RoNA==
-  /jest-puppeteer/4.4.0_puppeteer@4.0.1:
+  /jest-puppeteer/4.4.0_puppeteer@5.0.0:
     dependencies:
       expect-puppeteer: 4.4.0
       jest-environment-puppeteer: 4.4.0
-      puppeteer: 4.0.1
+      puppeteer: 5.0.0
     dev: true
     peerDependencies:
       puppeteer: '>= 1.5.0 < 3'
@@ -3701,16 +3700,6 @@ packages:
     dev: true
     resolution:
       integrity: sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
-  /lit-element/2.3.1:
-    dependencies:
-      lit-html: 1.2.1
-    dev: true
-    resolution:
-      integrity: sha512-tOcUAmeO3BzwiQ7FGWdsshNvC0HVHcTFYw/TLIImmKwXYoV0E7zCBASa8IJ7DiP4cen/Yoj454gS0qqTnIGsFA==
-  /lit-html/1.2.1:
-    dev: true
-    resolution:
-      integrity: sha512-GSJHHXMGLZDzTRq59IUfL9FCdAlGfqNp/dEa7k7aBaaWD+JKaCjsAk9KYm2V12ItonVaYx2dprN66Zdm1AuBTQ==
   /livereload-js/3.2.3:
     dev: true
     resolution:
@@ -4468,13 +4457,14 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
-  /puppeteer/4.0.1:
+  /puppeteer/5.0.0:
     dependencies:
       debug: 4.1.1
       extract-zip: 2.0.1
       https-proxy-agent: 4.0.0
       mime: 2.4.6
       mitt: 2.0.1
+      pkg-dir: 4.2.0
       progress: 2.0.3
       proxy-from-env: 1.1.0
       rimraf: 3.0.2
@@ -4486,7 +4476,7 @@ packages:
       node: '>=10.18.1'
     requiresBuild: true
     resolution:
-      integrity: sha512-LIiSWTRqpTnnm3R2yAoMBx1inSeKwVZy66RFSkgSTDINzheJZPd5z5mMbPM0FkvwWAZ27a+69j5nZf+Fpyhn3Q==
+      integrity: sha512-JnZcgRQnfowRSJoSHteKU7G9fP/YYGB/juPn8m4jNqtzvR0h8GOoFmdjTBesJFfzhYkPU1FosHXnBVUB++xgaA==
   /qs/6.5.2:
     dev: true
     engines:
@@ -5800,9 +5790,8 @@ specifiers:
   jest-cli: 26.1.0
   jest-puppeteer: 4.4.0
   jest-puppeteer-istanbul: 0.5.3
-  lit-element: 2.3.1
   nyc: 15.1.0
-  puppeteer: 4.0.1
+  puppeteer: 5.0.0
   rollup: 2.18.2
   rollup-plugin-istanbul: 2.0.1
   rollup-plugin-livereload: 1.3.0

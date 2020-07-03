@@ -1,123 +1,147 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element'
-import mainStyle from './script-editor.css'
 import { CodeJar } from './codejar/codejar'
 import Prism from './prism/prism-core'
 import lightTheme from './prism/prism-light.css'
 import lineNumbersStyle from './prism/prism-line-numbers.css'
 import matchBracesStyle from './prism/prism-match-braces.css'
+import mainStyle from './script-editor.css'
 import './prism/prism-line-numbers'
 import './prism/prism-match-braces'
 import './prism/prism-graphviz'
 
 const features = ['line-numbers', 'match-braces', 'rainbow-braces']
-const renderedKey = Symbol('rendered')
+const connectedKey = Symbol('connecte')
+const valueKey = Symbol('value')
+const tabKey = Symbol('tab')
+const classKey = Symbol('class')
 const jarKey = Symbol('jar')
 const widthKey = Symbol('width')
 const heightKey = Symbol('height')
 const mousedownKey = Symbol('mousedown')
 const mouseupKey = Symbol('mouseup')
-let pendingAllLineNumbersUpdate
+let template, pendingAllLineNumbersUpdate
 
 Prism.codeTag = 'div'
+
+function getTemplate () {
+  if (!template) {
+    template = document.createElement('template')
+    template.innerHTML = `<style>
+${lightTheme}
+${lineNumbersStyle}
+${matchBracesStyle}
+${mainStyle}
+</style>
+<pre id=source-wrapper><div id=source></div></pre>`
+  }
+  return template
+}
 
 function triggerEvent (element, type, detail) {
   element.dispatchEvent(new CustomEvent(type, { detail }))
 }
 
 function getFeatureClasses (element) {
-  return element.class
+  return element.className
     .trim()
     .split(/\s+/)
     .filter(feature => features.includes(feature))
     .join(' ')
 }
 
-function hasChangedFeatureClass (newValue, oldValue) {
-  const newClasses = newValue.trim().split(/\s+/)
+function hasChangedFeatureClass (oldValue, newValue) {
   const oldClasses = oldValue ? oldValue.trim().split(/\s+/) : []
+  const newClasses = newValue.trim().split(/\s+/)
   return features.some(feature =>
-    newClasses.includes(feature) !== oldClasses.includes(feature))
+    oldClasses.includes(feature) !== newClasses.includes(feature))
 }
 
-function createJar (element) {
+function normalizeLineBreaks (value) {
+  return value.replace(/\r?\n/, '\n')
+}
+
+function createEditor (element) {
   const ownerRoot = element.shadowRoot
-  const source = ownerRoot.children[0].children[0]
-  const jar = CodeJar(source, Prism.highlightElement, { tab: element.tab, ownerRoot })
-  jar.onUpdate(code => {
-    element.value = code
-    triggerEvent(element, 'input', code)
+  const source = ownerRoot.getElementById('source')
+  const featureClasses = getFeatureClasses(element)
+  source.className = `language-graphviz ${featureClasses}`
+  const jar = element[jarKey] = CodeJar(source, Prism.highlightElement, { tab: element.tab, ownerRoot })
+  updateEditor(element)
+  jar.onUpdate(newCode => {
+    newCode = normalizeLineBreaks(newCode)
+    if (element.value !== newCode) {
+      element[valueKey] = newCode
+      triggerEvent(element, 'input', newCode)
+    }
   })
-  return jar
 }
 
-class GraphvizScriptEditorElement extends LitElement {
+function destroyEditor (element) {
+  element[jarKey].destroy()
+  element[jarKey] = null
+}
+
+function rebuildEditor (element) {
+  destroyEditor(element)
+  createEditor(element)
+}
+
+function updateEditor (element) {
+  element[jarKey].updateCode(element.value)
+}
+
+function configureEditor (element) {
+  element[jarKey].updateOptions({ tab: element.tab })
+}
+
+class GraphvizScriptEditorElement extends HTMLElement {
   constructor () {
     super()
-    this.value = ''
-    this.tab = '  '
-    this.class = ''
+    this[valueKey] = ''
+    this[tabKey] = '  '
+    this[classKey] = ''
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.appendChild(getTemplate().content.cloneNode(true))
   }
 
-  render () {
-    const jar = this[jarKey]
-    if (jar) jar.destroy()
-    return html`<pre id=source-wrapper>
-  <div id=source class="language-graphviz ${getFeatureClasses(this)}">${this.value}</div>
-</pre>`
+  get value () { return this[valueKey] }
+  set value (value) { this.setAttribute('value', value) }
+
+  get tab () { return this[tabKey] }
+  set tab (value) { this.setAttribute('tab', value) }
+
+  get className () { return this[classKey] }
+  set className (value) { this.setAttribute('class', value) }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    switch (name) {
+      case 'value':
+        this[valueKey] = normalizeLineBreaks(newValue)
+        if (this[connectedKey]) updateEditor(this)
+        break
+      case 'tab':
+        this[tabKey] = newValue
+        if (this[connectedKey]) configureEditor(this)
+        break
+      case 'class':
+        this[classKey] = newValue
+        if (this[connectedKey] && hasChangedFeatureClass(oldValue, newValue)) rebuildEditor(this)
+        break
+    }
   }
 
   connectedCallback () {
-    super.connectedCallback()
     registerEvents(this)
+    createEditor(this)
+    this[connectedKey] = true
   }
 
   disconnectedCallback () {
+    destroyEditor(this)
     unregisterEvents(this)
-    super.disconnectedCallback()
+    this[connectedKey] = false
   }
 
-  shouldUpdate (changedProperties) {
-    const rendered = this[renderedKey]
-    if (!rendered) return true
-    if (changedProperties.has('class')) return true
-    if (changedProperties.has('value')) {
-      const jar = this[jarKey]
-      const newValue = this.value
-      if (newValue !== jar.toString()) jar.updateCode(newValue)
-    }
-    if (changedProperties.has('tab')) {
-      this[jarKey].updateOptions({ tab: this.tab })
-    }
-    return false
-  }
-
-  updated () {
-    this[jarKey] = createJar(this)
-    this[renderedKey] = true
-  }
-
-  static get properties () {
-    return {
-      value: { type: String, reflect: true },
-      tab: { type: String, reflect: true },
-      class: {
-        type: String,
-        reflect: true,
-        hasChanged (newValue, oldValue) {
-          return hasChangedFeatureClass(newValue, oldValue)
-        }
-      }
-    }
-  }
-
-  static get styles () {
-    return [
-      css`${unsafeCSS(lightTheme)}`,
-      css`${unsafeCSS(lineNumbersStyle)}`,
-      css`${unsafeCSS(matchBracesStyle)}`,
-      css`${unsafeCSS(mainStyle)}`
-    ]
-  }
+  static get observedAttributes () { return ['value', 'tab', 'class'] }
 }
 
 function rememberSize (element) {
@@ -129,7 +153,7 @@ function updateLineNumbers (element) {
   const newWidth = element.clientWidth
   const newHeight = element.clientHeight
   if (newWidth !== element[widthKey] || newHeight !== element[heightKey]) {
-    Prism.plugins.lineNumbers.updateLineNumbers(element.shadowRoot.children[0])
+    Prism.plugins.lineNumbers.updateLineNumbers(element.shadowRoot.getElementById('source-wrapper'))
     element[widthKey] = newWidth
     element[heightKey] = newHeight
   }

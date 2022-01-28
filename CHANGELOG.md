@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/prantlf/graphviz-webcomponent/compare/v0.5.0...v0.5.1) (2022-01-28)
+
+
+### Bug Fixes
+
+* Fix published version number ([ccf42ce](https://github.com/prantlf/graphviz-webcomponent/commit/ccf42cea1d75221e2319a530aada53ef13201b50))
+
 # [0.5.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.4.2...v0.5.0) (2022-01-28)
 
 

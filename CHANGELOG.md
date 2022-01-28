@@ -1,3 +1,17 @@
+# [0.5.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.4.2...v0.5.0) (2022-01-28)
+
+
+### Bug Fixes
+
+* Adapt sources after upgrading dependencies ([51a5492](https://github.com/prantlf/graphviz-webcomponent/commit/51a54926bbe431fa8e595366c59a64ee897cc622))
+* Preload the renderer out of the execution of the main script ([9611670](https://github.com/prantlf/graphviz-webcomponent/commit/96116707b032ad8b7d4a0132c8580f52ed531b67))
+* Publish with new dependencies ([43f17de](https://github.com/prantlf/graphviz-webcomponent/commit/43f17def34f9c594b1575947c89b9e63cf2f9846))
+
+
+### Features
+
+* Add ES6 modules exporting the HTML element classes ([bb62fc6](https://github.com/prantlf/graphviz-webcomponent/commit/bb62fc6e86c7cdc94d2a22cf96b06cb7e87e7ba8))
+
 ## [0.4.2](https://github.com/prantlf/graphviz-webcomponent/compare/v0.4.1...v0.4.2) (2020-07-03)
 
 ## Performance

@@ -1,12 +1,9 @@
 # graphviz-webcomponent
 
 [![npm](https://img.shields.io/npm/v/graphviz-webcomponent)](https://www.npmjs.com/package/graphviz-webcomponent#top)
-[![Build Status](https://travis-ci.org/prantlf/graphviz-webcomponent.svg?branch=master)](https://travis-ci.org/prantlf/graphviz-webcomponent)
 [![codecov](https://codecov.io/gh/prantlf/graphviz-webcomponent/branch/master/graph/badge.svg)](https://codecov.io/gh/prantlf/graphviz-webcomponent)
+![Dependency status](https://img.shields.io/librariesio/release/npm/graphviz-webcomponent)
 [![codebeat badge](https://codebeat.co/badges/9d85c898-df08-42fb-8ab9-407dc2ce2d22)](https://codebeat.co/projects/github-com-prantlf-graphviz-webcomponent-master)
-[![Dependency Status](https://david-dm.org/prantlf/graphviz-webcomponent.svg)](https://david-dm.org/prantlf/graphviz-webcomponent)
-[![devDependency Status](https://david-dm.org/prantlf/graphviz-webcomponent/dev-status.svg)](https://david-dm.org/prantlf/graphviz-webcomponent#info=devDependencies)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 [WebComponents] for rendering a [Graphviz] graph and for editing its source script with syntax highlighting. Uses [@hpcc-js/wasm] to generate the graph image in the web browser using [WASM]. See it working [on-line]!
 
@@ -31,7 +28,7 @@ Render a graph:
     main -> cleanup;
   }
 "></graphviz-graph>
-<script defer src=https://unpkg.com/graphviz-webcomponent@0.4.2/dist/graph.min.js></script>
+<script defer src=https://unpkg.com/graphviz-webcomponent@0.4.3/dist/graph.min.js></script>
 ```
 
 Show a script editor and render the edited content to a graph:
@@ -45,7 +42,7 @@ Show a script editor and render the edited content to a graph:
 "></graphviz-script-editor>
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>>
-  import 'https://unpkg.com/graphviz-webcomponent@0.4.2/dist/index.min.mjs'
+  import 'https://unpkg.com/graphviz-webcomponent@0.4.3/dist/index.min.mjs'
   document.getElementById('source').addEventListener('input', event =>
     document.getElementById('graph').graph = event.details)
 </script>
@@ -64,7 +61,7 @@ pnpm i graphviz-webcomponent
 If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing either to CDN or to the local filesystem:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@0.4.2/dist/index.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@0.4.3/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
 
@@ -108,7 +105,7 @@ The `graphviz-graph` element uses a [Web Worker] to perform the rendering in the
 ```js
 graphvizWebComponent = {
   rendererUrl: 'https://unpkg.com/graphviz-webcomponent@1.4.0/dist/index.min.js',
-  wasmFolder: 'https://unpkg.com/@hpcc-js/wasm@0.3.14/dist',
+  wasmFolder: 'https://unpkg.com/@hpcc-js/wasm@1.12.8/dist',
   delayWorkerLoading: false
 }
 ```
@@ -154,7 +151,7 @@ Whenever the content of the editor changes, the custom event `input` with the so
 
 ## License
 
-Copyright (c) 2020 Ferdinand Prantl
+Copyright (c) 2020-2022 Ferdinand Prantl
 
 Licensed under the MIT license.
 

@@ -1,6 +1,6 @@
 {
   "name": "graphviz-webcomponent",
-  "version": "0.0.0-development",
+  "version": "0.4.2",
   "description": "WebComponents for rendering a Graphviz graph and for editing its source script with syntax highlighting.",
   "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantlf.tk/)",
   "keywords": [
@@ -77,24 +77,24 @@
     "statements": 90
   },
   "devDependencies": {
-    "@hpcc-js/wasm": "0.3.14",
-    "@rollup/plugin-node-resolve": "8.1.0",
-    "eslint": "7.3.1",
-    "eslint-config-standard": "14.1.1",
-    "eslint-plugin-import": "2.22.0",
+    "@hpcc-js/wasm": "1.12.8",
+    "@rollup/plugin-node-resolve": "13.1.3",
+    "eslint": "8.7.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.25.4",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-standard": "4.0.1",
-    "http-server": "0.12.3",
-    "jest-cli": "26.1.0",
-    "jest-puppeteer": "4.4.0",
+    "eslint-plugin-promise": "6.0.0",
+    "eslint-plugin-standard": "4.1.0",
+    "http-server": "14.1.0",
+    "jest-cli": "27.4.7",
+    "jest-puppeteer": "6.0.3",
     "jest-puppeteer-istanbul": "0.5.3",
     "nyc": "15.1.0",
-    "puppeteer": "5.0.0",
-    "rollup": "2.18.2",
-    "rollup-plugin-istanbul": "2.0.1",
-    "rollup-plugin-livereload": "1.3.0",
+    "puppeteer": "13.1.2",
+    "rollup": "2.66.1",
+    "rollup-plugin-istanbul": "3.0.0",
+    "rollup-plugin-livereload": "2.0.5",
     "rollup-plugin-string": "3.0.0",
-    "rollup-plugin-terser": "6.1.0"
+    "rollup-plugin-terser": "7.0.2"
   }
 }

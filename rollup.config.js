@@ -18,6 +18,7 @@ export default [
       {
         sourcemap: true,
         format: 'iife',
+        name: 'graphvizElements',
         file: 'dist/index.min.js'
       },
       {
@@ -42,6 +43,7 @@ export default [
       {
         sourcemap: true,
         format: 'iife',
+        name: 'graphvizElements',
         file: 'dist/graph.min.js'
       },
       {
@@ -58,6 +60,7 @@ export default [
       {
         sourcemap: true,
         format: 'iife',
+        name: 'graphvizElements',
         file: 'dist/script-editor.min.js'
       },
       {

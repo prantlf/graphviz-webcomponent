@@ -147,7 +147,7 @@ digraph G {
     await loadPage('graph', 'wasm.error')
     await waitForErrorEvent()
     await waitForContent()
-    await expectText('Graphviz failed')
+    await expectText('Aborted')
   })
 
   test('trial update fails without WASM loaded', async () => {
@@ -155,7 +155,7 @@ digraph G {
       await tryGraph('digraph G {}')
       expect(false).toBeTruthy()
     } catch {
-      await expectText('Graphviz failed')
+      await expectText('Aborted')
     }
   })
 })

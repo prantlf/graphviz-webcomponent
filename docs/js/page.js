@@ -51,7 +51,8 @@ function forgetImage () {
 function downloadFile (blob) {
   const link = document.createElement('a')
   const type = blob.type
-  link.download = type === 'image/png' ? 'graph.png'
+  link.download = type === 'image/png'
+    ? 'graph.png'
     : type === 'image/svg+xml' ? 'graph.svg' : 'graph.dot'
   document.body.appendChild(link)
   const url = URL.createObjectURL(blob)

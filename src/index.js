@@ -1,4 +1,2 @@
-import GraphvizGraphElement from './graph'
-import GraphvizScriptEditorElement from './script-editor'
-
-export { GraphvizGraphElement, GraphvizScriptEditorElement }
+export { default as GraphvizGraphElement } from './graph'
+export { default as GraphvizScriptEditorElement } from './script-editor'

@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/prantlf/graphviz-webcomponent/branch/master/graph/badge.svg)](https://codecov.io/gh/prantlf/graphviz-webcomponent)
 ![Dependency status](https://img.shields.io/librariesio/release/npm/graphviz-webcomponent)
 [![codebeat badge](https://codebeat.co/badges/9d85c898-df08-42fb-8ab9-407dc2ce2d22)](https://codebeat.co/projects/github-com-prantlf-graphviz-webcomponent-master)
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/prantlf//graphviz-webcomponent)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/graphviz-webcomponent)
 
 [WebComponents] for rendering a [Graphviz] graph and for editing its source script with syntax highlighting. Uses [@hpcc-js/wasm] to generate the graph image in the web browser using [WASM]. See it working [on-line]!
 

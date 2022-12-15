@@ -22,7 +22,7 @@ jobs:
         run_install: |
           - args: [--frozen-lockfile, --no-verify-store-integrity]
     - name: Test
-      run: npm run all
+      run: xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run all
     - name: Coverage
       uses: codecov/codecov-action@v2
     - name: Publish

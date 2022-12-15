@@ -2,17 +2,16 @@
   "name": "graphviz-webcomponent-docs",
   "private": true,
   "scripts": {
-    "lint": "../node_modules/.bin/eslint --cache --max-warnings=0 js/page.js",
-    "fix": "../node_modules/.bin/eslint --fix --cache --max-warnings=0 js/page.js",
-    "copy:deps": "cp ../dist/renderer.min.* js/ && cp ../dist/index.min.js* js/",
-    "build:dev": "NODE_ENV=development ../node_modules/.bin/rollup -c",
-    "build:prod": "NODE_ENV=production ../node_modules/.bin/rollup -c",
-    "dev": "../node_modules/.bin/rollup -c -w",
+    "copy:deps": "cp.js ../dist/renderer.min.* js/ && cp.js ../dist/index.min.js* js/",
+    "build:dev": "../node_modules/.bin/rollup -c --environment NODE_ENV:development",
+    "build:prod": "../node_modules/.bin/rollup -c --environment NODE_ENV:production",
+    "watch": "../node_modules/.bin/rollup -cw",
     "start": "../node_modules/.bin/http-server -p 5000 ..",
-    "all": "npm run lint && npm run build:prod && npm run copy:deps"
+    "test": "../node_modules/.bin/denolint && npm run build:prod && npm run copy:deps"
   },
   "devDependencies": {
-    "postcss": "^8.4.5",
+    "@unixcompat/cp.js": "1.0.0",
+    "postcss": "8.4.20",
     "rollup-plugin-postcss": "4.0.2"
   }
 }

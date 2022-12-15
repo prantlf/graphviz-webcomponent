@@ -1,0 +1,8 @@
+{
+  "files":  {
+    "include": ["js/pages.js"]
+  },
+  "rules": {
+    "tags": ["recommended"]
+  }
+}

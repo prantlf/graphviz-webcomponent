@@ -131,7 +131,7 @@ describe('graphviz-script-editor', () => {
           clientX: window.innerWidth / 2 - 4,
           clientY: window.innerHeight / 2 - 4
         })
-        window.dispatchEvent(event)
+        globalThis.dispatchEvent(event)
       }
 
       function waitForTime (milliseconds) {

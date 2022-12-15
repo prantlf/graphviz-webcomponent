@@ -8,16 +8,13 @@
 </head>
 
 <body>
-  <graphviz-graph wasmFolder=../../node_modules/@hpcc-js/wasm/dist graph="
+  <graphviz-graph graph="
 digraph G {
   layout=error
 }
   "></graphviz-graph>
   <script>
-    graphvizWebComponent = {
-      rendererUrl: '../../dist/renderer.min.js',
-      wasmFolder: '../../node_modules/@hpcc-js/wasm/dist'
-    }
+    graphvizWebComponent = { rendererUrl: '../../dist/renderer.min.js' }
   </script>
   <script defer src=../../dist/index.min.js></script>
 </body>

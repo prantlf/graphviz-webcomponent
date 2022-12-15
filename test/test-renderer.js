@@ -2,8 +2,8 @@
 
 const { loadPage } = require('./support')
 
-function renderScript (script, wasmFolder) {
-  return page.evaluate(async (script, wasmFolder) => {
+function renderScript (script) {
+  return page.evaluate(script => {
     return new Promise(resolve => {
       function onMessage ({ data }) {
         if (data.script) return // request for the renderer
@@ -12,29 +12,16 @@ function renderScript (script, wasmFolder) {
       }
       self.addEventListener('message', onMessage)
       self.dispatchEvent(new MessageEvent('message', {
-        data: { script, wasmFolder }
+        data: { script }
       }))
     })
-  }, script, wasmFolder)
+  }, script)
 }
 
 describe('renderer', () => {
-  test('fails without wasmFolder', async () => {
+  test('renders script', async () => {
     await loadPage('renderer', 'initialized')
     const result = await renderScript('digraph G {}')
-    expect(typeof result.error).toBe('object')
-    expect(result.error.message).toContain('fetching of the wasm failed')
-  })
-
-  test('cannot recover from fatal failure', async () => {
-    const result = await renderScript('digraph G {}', '../../node_modules/@hpcc-js/wasm/dist')
-    expect(typeof result.error).toBe('object')
-    expect(result.error.message).toContain('fetching of the wasm failed')
-  })
-
-  test('renders script', async () => {
-    await page.reload()
-    const result = await renderScript('digraph G {}', '../../node_modules/@hpcc-js/wasm/dist')
     expect(result.svg).toContain('<svg')
   })
 

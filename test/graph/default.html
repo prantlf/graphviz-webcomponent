@@ -4,11 +4,11 @@
   <meta charset=utf-8>
   <meta name=viewport content="width=device-width,initial-scale=1">
   <meta name=description content="Tests local @hpcc-js/wasm."></meta>
-  <title>Local Test</title>
+  <title>Test Default Renderer</title>
 </head>
 
 <body>
-  <graphviz-graph wasmFolder=../../node_modules/@hpcc-js/wasm/dist graph="
+  <graphviz-graph graph="
 digraph G {
   main -> parse -> execute;
   main -> init;
@@ -21,11 +21,7 @@ digraph G {
 }
   "></graphviz-graph>
   <script>
-    graphvizWebComponent = {
-      rendererUrl: '../../dist/renderer.min.js',
-      wasmFolder: '../../node_modules/@hpcc-js/wasm/dist',
-      delayWorkerLoading: true
-    }
+    graphvizWebComponent = { rendererUrl: '../../dist/renderer.min.js' }
   </script>
   <script defer src=../../dist/index.min.js></script>
 </body>

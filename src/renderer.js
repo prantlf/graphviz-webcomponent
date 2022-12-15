@@ -1,16 +1,17 @@
-import { wasmFolder as setWasmFolder, graphviz } from '@hpcc-js/wasm'
+import { Graphviz } from '@hpcc-js/wasm/graphviz'
 
+let graphviz
 let fatalError
 
-if (!self.document) self.document = {} // workaround for a bug in @hpcc-js/wasm
+// if (!self.document) self.document = {} // workaround for a bug in @hpcc-js/wasm
 
 async function receiveRequest ({ data }) {
-  const { script, wasmFolder } = data
+  const { script } = data
   if (script === undefined) return // prevent endless message loop in tests
   if (fatalError) return postMessage({ error: fatalError })
   try {
-    if (wasmFolder) setWasmFolder(wasmFolder)
-    const svg = await graphviz.layout(script, 'svg')
+    if (!graphviz) graphviz = await Graphviz.load()
+    const svg = graphviz.dot(script)
     postMessage({ svg })
   } catch ({ message }) {
     postMessage({ error: { message } })

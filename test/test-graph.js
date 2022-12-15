@@ -3,7 +3,7 @@
 const { loadPage } = require('./support')
 
 function tryGraph (script) {
-  return page.evaluate(async script => {
+  return page.evaluate(script => {
     const graphviz = document.querySelector('graphviz-graph')
     return graphviz.tryGraph(script)
   }, script)
@@ -55,7 +55,7 @@ function expectSVG () {
 
 describe('graphviz-graph', () => {
   test('loads local @hpcc-js/wasm', async () => {
-    await loadPage('graph', 'local')
+    await loadPage('graph', 'delayed')
     await waitForRenderEvent()
     await waitForContent()
     await expectSVG()
@@ -111,12 +111,12 @@ digraph G {
     await page.evaluate(() => {
       document.querySelector('graphviz-graph').graph = ''
     })
-    await page.waitFor(100)
+    await page.waitForTimeout(100)
     expect(await getContent()).toBe('')
   })
 
-  test('loads remote @hpcc-js/wasm', async () => {
-    await loadPage('graph', 'remote')
+  test('loads @hpcc-js/wasm from other URL', async () => {
+    await loadPage('graph', 'other-url')
     await waitForRenderEvent()
     await waitForContent()
     await expectSVG()
@@ -137,25 +137,9 @@ digraph G {
   })
 
   test('reports typo in graph script', async () => {
-    await loadPage('graph', 'graph.error')
+    await loadPage('graph', 'graph-error')
     await waitForErrorEvent()
     await waitForContent()
     await expectText('Layout was not done')
-  })
-
-  test('reports invalid WASM location', async () => {
-    await loadPage('graph', 'wasm.error')
-    await waitForErrorEvent()
-    await waitForContent()
-    await expectText('Aborted')
-  })
-
-  test('trial update fails without WASM loaded', async () => {
-    try {
-      await tryGraph('digraph G {}')
-      expect(false).toBeTruthy()
-    } catch {
-      await expectText('Aborted')
-    }
   })
 })

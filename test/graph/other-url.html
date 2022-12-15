@@ -3,8 +3,8 @@
 <head>
   <meta charset=utf-8>
   <meta name=viewport content="width=device-width,initial-scale=1">
-  <meta name=description content="Tests @hpcc-js/wasm from unpkg."></meta>
-  <title>Remote Test</title>
+  <meta name=description content="Tests @hpcc-js/wasm from other URL."></meta>
+  <title>Test Renderer from Other URL</title>
 </head>
 
 <body>
@@ -57,9 +57,13 @@ digraph G {
   end [shape=Msquare];
 }
   "></graphviz-graph>
-  <script>
-    graphvizWebComponent = { rendererUrl: '../../dist/renderer.min.js' }
+  <script type=module>
+    const response = await fetch('../../dist/renderer.min.js')
+    if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
+    const blob = await response.blob()
+    const rendererUrl = URL.createObjectURL(blob)
+    window.graphvizWebComponent = { rendererUrl }
+    import('../../dist/index.min.js')
   </script>
-  <script defer src=../../dist/index.min.js></script>
 </body>
 </html>

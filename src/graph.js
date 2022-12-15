@@ -1,15 +1,14 @@
 const graphKey = Symbol('graph')
 const scaleKey = Symbol('scale')
 const { delayWorkerLoading } = window.graphvizWebComponent || {}
-let renderer, rendererUrl, wasmFolder
+let renderer, rendererUrl
 
 if (!delayWorkerLoading) setTimeout(getRenderer)
 
 function ensureConfiguration () {
   if (!rendererUrl) {
     ({
-      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@0.5.1/dist/renderer.min.js',
-      wasmFolder = 'https://unpkg.com/@hpcc-js/wasm@1.12.8/dist'
+      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@1.0.0/dist/renderer.min.js'
     } = window.graphvizWebComponent || {})
   }
 }
@@ -25,15 +24,8 @@ function getRenderer () {
 function requestRendering (element, script, receiveResult) {
   const renderer = getRenderer()
   renderer.addEventListener('message', receiveResult)
-  const localWasmFolder = element.getAttribute('wasmFolder')
-  if (localWasmFolder) {
-    console.warn('Stop using the deprecated "wasmFolder" attribute. Set the global variable "graphvizWebComponent.wasmFolder" instead.')
-    wasmFolder = localWasmFolder
-  } else {
-    ensureConfiguration()
-  }
-  renderer.postMessage({ script: script || element.graph, wasmFolder })
-  wasmFolder = undefined
+  ensureConfiguration()
+  renderer.postMessage({ script: script || element.graph })
 }
 
 function closeRendering (receiveResult) {

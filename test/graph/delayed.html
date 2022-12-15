@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width,initial-scale=1">
+  <meta name=description content="Tests local @hpcc-js/wasm."></meta>
+  <title>Test Delayed Renderer</title>
+</head>
+
+<body>
+  <graphviz-graph graph="
+digraph G {
+  main -> parse -> execute;
+  main -> init;
+  main -> cleanup;
+  execute -> make_string;
+  execute -> printf;
+  init -> make_string;
+  main -> printf;
+  execute -> compare;
+}
+  "></graphviz-graph>
+  <script>
+    graphvizWebComponent = {
+      rendererUrl: '../../dist/renderer.min.js',
+      delayWorkerLoading: true
+    }
+  </script>
+  <script defer src=../../dist/index.min.js></script>
+</body>
+</html>

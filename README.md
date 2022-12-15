@@ -10,8 +10,8 @@
 
 Features:
 
-* Lightweight [WebComponents] (graph 2.0 kB minified, 0.9 kB gzipped, script editor 24.6 kB minified, 9.2 kB gzipped).
-* Renderer downloaded in the background (1.0 MB minified, 472.9 kB gzipped).
+* Lightweight [WebComponents] (graph 1.7 kB minified, 0.8 kB gzipped, 0.7 kB brotlied, script editor 24.1 kB minified, 9.2 kB gzipped, 8.2 kB brotlied).
+* Renderer downloaded in the background (613 kB minified, 475 kB gzipped, 473 kB brotlied).
 
 Related tools:
 
@@ -44,7 +44,7 @@ Render a graph:
     main -> cleanup;
   }
 "></graphviz-graph>
-<script defer src=https://unpkg.com/graphviz-webcomponent@0.5.1/dist/graph.min.js></script>
+<script defer src=https://unpkg.com/graphviz-webcomponent@1.0.0/dist/graph.min.js></script>
 ```
 
 Show a script editor and render the edited content to a graph:
@@ -58,7 +58,7 @@ Show a script editor and render the edited content to a graph:
 "></graphviz-script-editor>
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>>
-  import 'https://unpkg.com/graphviz-webcomponent@0.5.1/dist/index.min.mjs'
+  import 'https://unpkg.com/graphviz-webcomponent@1.0.0/dist/index.min.mjs'
   document.getElementById('source').addEventListener('input', event =>
     document.getElementById('graph').graph = event.details)
 </script>
@@ -77,7 +77,7 @@ pnpm i graphviz-webcomponent
 If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing either to CDN or to the local filesystem:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@0.5.1/dist/index.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@1.0.0/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
 
@@ -116,27 +116,25 @@ The method `tryGraph(graph: string): Promise<string>` can be called to condition
 
 #### Configuration
 
-The `graphviz-graph` element uses a [Web Worker] to perform the rendering in the background and [WASM] to improve the computation performance. These two external scripts are loaded from URLs, which can be customized. The defaults are:
+The `graphviz-graph` element uses a [Web Worker] to perform the rendering in the background and [WASM] to improve the computation performance. The external script is loaded from a URL, which can be customized. The default is:
 
 ```js
 graphvizWebComponent = {
-  rendererUrl: 'https://unpkg.com/graphviz-webcomponent@1.4.0/dist/index.min.js',
-  wasmFolder: 'https://unpkg.com/@hpcc-js/wasm@1.12.8/dist',
+  rendererUrl: 'https://unpkg.com/graphviz-webcomponent@1.0.0/dist/index.min.js',
   delayWorkerLoading: false
 }
 ```
 
-The global object `graphvizWebComponent` can be set *before the `graphviz-webcomponent` scripts (`index.min.js` or `graph.min.js`) are imported* to change the defaults. Changing the properties after the sctips are loaded will have no effect.
+The global object `graphvizWebComponent` can be set *before the `graphviz-webcomponent` scripts (`index.min.js` or `graph.min.js`) are imported* to change the defaults. Changing the properties after the scripts are loaded will have no effect.
 
 If you set `graphvizWebComponent.delayWorkerLoading` to true, the web worker will be downloaded when the first `graphviz-graph` element will be inserted to the page.
 
-If you want to enforce only local resources, you can change the URLsto relative paths within your project by setting the global `graphvizWebComponent` object, for example:
+If you want to enforce only local resources, you can change the URLs to relative paths within your project by setting the global `graphvizWebComponent` object, for example:
 
 ```html
 <script>
   graphvizWebComponent = {
-    rendererUrl: '../node_modules/graphviz-webcomponent/dist/renderer.min.js',
-    wasmFolder: '../node_modules/@hpcc-js/wasm/dist'
+    rendererUrl: '../node_modules/graphviz-webcomponent/dist/renderer.min.js'
   }
 </script>
 ```

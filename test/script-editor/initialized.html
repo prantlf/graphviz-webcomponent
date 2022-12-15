@@ -21,6 +21,8 @@ digraph G {
 }
   "></graphviz-script-editor>
   <script>
+    // Prevent the worker loading error, when the renderer URL is not provided
+    // and ./renderer.min.js is not deployed relatively to this page.
     graphvizWebComponent = { delayWorkerLoading: true }
   </script>
   <script defer src=../../dist/index.min.js></script>

@@ -182,7 +182,7 @@ function scheduleUpdateAllLineNumbers () {
   pendingAllLineNumbersUpdate = setTimeout(updateAllLineNumbers, 300)
 }
 
-window.addEventListener('resize', scheduleUpdateAllLineNumbers)
+globalThis.addEventListener('resize', scheduleUpdateAllLineNumbers)
 
 customElements.define('graphviz-script-editor', GraphvizScriptEditorElement)
 

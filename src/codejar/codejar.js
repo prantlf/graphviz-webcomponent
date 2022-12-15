@@ -366,7 +366,7 @@ export function CodeJar(editor, highlight, opt = {}) {
         let timeout = 0;
         return (...args) => {
             clearTimeout(timeout);
-            timeout = window.setTimeout(() => cb(...args), wait);
+            timeout = globalThis.setTimeout(() => cb(...args), wait);
         };
     }
     function findPadding(text) {

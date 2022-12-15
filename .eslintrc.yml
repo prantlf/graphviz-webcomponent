@@ -1,5 +1,0 @@
-extends:
-  - standard
-  - eslint:recommended
-env:
-  browser: true

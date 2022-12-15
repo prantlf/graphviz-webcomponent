@@ -24,18 +24,21 @@
     "src"
   ],
   "browser": "dist/index.min.js",
+  "main": "dist/index.min.js",
   "module": "src/index.min.mjs",
+  "exports": {
+    "require": "./dist/index.min.js",
+    "import": "./dist/index.min.mjs"
+  },
   "scripts": {
-    "lint": "eslint --cache --max-warnings=0 *.js --ignore-pattern=codejar --ignore-pattern=prism src test",
-    "fix": "eslint --fix --cache --max-warnings=0 --ignore-pattern=codejar --ignore-pattern=prism *.js src test",
-    "build:dev": "NODE_ENV=development rollup -c",
-    "build:prod": "NODE_ENV=production rollup -c",
-    "dev": "rollup -c -w",
+    "build:dev": "rollup -c --environment NODE_ENV:development",
+    "build:prod": "rollup -c --environment NODE_ENV:production",
+    "watch": "rollup -cw",
     "start": "http-server -p 5000",
     "check": "NODE_ENV=development jest",
-    "coverage": "rm -f coverage/coverage-final.json && nyc report",
+    "coverage": "rm.js -f coverage/coverage-final.json && nyc report",
     "test": "npm run check && npm run coverage",
-    "all": "npm run build:dev && npm test && npm run lint && npm run build:prod"
+    "all": "npm run build:dev && npm test && denolint && npm run build:prod"
   },
   "jest": {
     "preset": "jest-puppeteer",
@@ -92,26 +95,22 @@
     ]
   },
   "devDependencies": {
-    "@hpcc-js/wasm": "1.12.8",
-    "@rollup/plugin-node-resolve": "13.1.3",
-    "@semantic-release/changelog": "6.0.1",
+    "@hpcc-js/wasm": "2.3.0",
+    "@rollup/plugin-node-resolve": "15.0.1",
+    "@semantic-release/changelog": "6.0.2",
     "@semantic-release/git": "10.0.1",
-    "eslint": "8.8.0",
-    "eslint-config-standard": "16.0.3",
-    "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "6.0.0",
-    "eslint-plugin-standard": "4.1.0",
-    "http-server": "14.1.0",
-    "jest-cli": "27.4.7",
-    "jest-puppeteer": "6.0.3",
+    "@unixcompat/rm.js": "1.0.0",
+    "denolint": "2.0.5",
+    "http-server": "14.1.1",
+    "jest-cli": "29.3.1",
+    "jest-puppeteer": "6.2.0",
     "jest-puppeteer-istanbul": "0.5.3",
     "nyc": "15.1.0",
-    "puppeteer": "13.1.2",
-    "rollup": "2.66.1",
-    "rollup-plugin-istanbul": "3.0.0",
+    "puppeteer": "19.4.0",
+    "rollup": "3.7.4",
+    "rollup-plugin-istanbul": "4.0.0",
     "rollup-plugin-livereload": "2.0.5",
     "rollup-plugin-string": "3.0.0",
-    "rollup-plugin-terser": "7.0.2"
+    "rollup-plugin-swc-minify": "1.0.5"
   }
 }

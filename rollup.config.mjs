@@ -1,7 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve'
 import livereload from 'rollup-plugin-livereload'
 import istanbul from 'rollup-plugin-istanbul'
-import { terser } from 'rollup-plugin-terser'
+import { minify } from 'rollup-plugin-swc-minify'
 import { string } from 'rollup-plugin-string'
 import { spawn } from 'child_process'
 
@@ -23,7 +23,6 @@ export default [
       },
       {
         sourcemap: true,
-        format: 'es',
         file: 'dist/index.min.mjs'
       }
     ],
@@ -33,7 +32,7 @@ export default [
       coverage && istanbul(instanbulOptions),
       watch && serve(),
       watch && livereload('.'),
-      !(watch || coverage) && terser(terserOptions)
+      !(watch || coverage) && minify(terserOptions)
     ],
     watch: { clearScreen: false }
   },
@@ -52,7 +51,7 @@ export default [
         file: 'dist/graph.min.mjs'
       }
     ],
-    plugins: [terser(terserOptions)]
+    plugins: [minify(terserOptions)]
   },
   {
     input: 'src/script-editor.js',
@@ -65,27 +64,25 @@ export default [
       },
       {
         sourcemap: true,
-        format: 'es',
         file: 'dist/script-editor.min.mjs'
       }
     ],
     plugins: [
       resolve(),
       string(stringOptions),
-      terser(terserOptions)
+      minify(terserOptions)
     ]
   },
   {
     input: 'src/renderer.js',
     output: {
       sourcemap: true,
-      format: 'es',
       file: 'dist/renderer.min.js'
     },
     plugins: [
       resolve(),
       coverage && istanbul(instanbulOptions),
-      !(watch || coverage) && terser(terserOptions)
+      !(watch || coverage) && minify(terserOptions)
     ]
   }
 ]

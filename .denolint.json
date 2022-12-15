@@ -1,0 +1,17 @@
+{
+  "files":  {
+    "exclude": ["docs"]
+  },
+  "rules": {
+    "tags": ["recommended"],
+    "exclude": [
+      "no-cond-assign",
+      "no-inner-declarations",
+      "no-prototype-builtins",
+      "no-redeclare",
+      "no-unused-vars",
+      "no-var",
+      "prefer-const"
+    ]
+  }
+}

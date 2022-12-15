@@ -40,6 +40,11 @@ async function waitForErrorEvent () {
     }))
 }
 
+function getPromise () {
+  return page.evaluate(() =>
+    document.querySelector('graphviz-graph').graphCompleted)
+}
+
 function getContent () {
   return page.evaluate(() =>
     document.querySelector('graphviz-graph').shadowRoot.innerHTML)
@@ -59,6 +64,7 @@ describe('graphviz-graph', () => {
     await waitForRenderEvent()
     await waitForContent()
     await expectSVG()
+    await getPromise()
   })
 
   test('updates changed graph', async () => {
@@ -84,6 +90,22 @@ digraph G {
     expect(first).not.toBe(second)
   })
 
+  test('updates changed graph with promise', async () => {
+    const first = await getContent()
+    await page.evaluate(() => {
+      const graphviz = document.querySelector('graphviz-graph')
+      graphviz.graph = `
+digraph G {
+  main -> cleanup;
+}
+`
+    })
+    expect(await getPromise()).toContain('<svg')
+    const second = await getContent()
+    expect(second).toContain('<svg')
+    expect(first).not.toBe(second)
+  })
+
   test('does not perform trial update with invalid input', async () => {
     try {
       await tryGraph('invalid')
@@ -91,6 +113,15 @@ digraph G {
     } catch {
       await expectSVG()
     }
+  })
+
+  test('updates changed graph with invalid content', async () => {
+    await page.evaluate(() => {
+      const graphviz = document.querySelector('graphviz-graph')
+      graphviz.graph = 'invalid'
+    })
+    expect((await getPromise()).message).toBe('syntax error in line 1 near \'invalid\'')
+    await expectText('syntax error in line 1 near \'invalid\'')
   })
 
   test('performs trial update with empty input', async () => {
@@ -141,5 +172,6 @@ digraph G {
     await waitForErrorEvent()
     await waitForContent()
     await expectText('Layout was not done')
+    expect((await getPromise()).message).toBe('Layout was not done')
   })
 })

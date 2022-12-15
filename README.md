@@ -106,6 +106,10 @@ The attribute `graph` supplies the graph script in the [Graphviz] format. Whenev
 
 The attribute `scale` sets the "zoom" level to the SVG content. It has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.
 
+#### Properties
+
+The property `graphCompleted` returns a promise with the result of the last rendering. If the rendering hasn't been finished yet, the promise will be pending. Whenever the `graphviz-graph` is being re-rendered again, the property `graphCompleted` will return a new promise. If rendering succeeds, the promise will be resolved with a string containing the SVG content. If rendering fails, the promise will be resolved with am object `{ message }` containing the error message. The property `graphCompleted` is an alternative to waiting for the event `render`.
+
 #### Events
 
 Whenever the SVG inside the `graphviz-graph` element is successfully updated, the custom event `render` with the SVG source as details will be triggered on the element. If the rendering fails, the custom event `error` with the `Error` instance as details will be triggered.

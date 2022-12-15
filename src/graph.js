@@ -64,19 +64,23 @@ function showError (element, error) {
 }
 
 function updateGraph (element) {
-  element.shadowRoot.innerHTML = ''
-  if (!element.graph) return
-  requestRendering(element, undefined, receiveResult)
+  return new Promise(resolve => {
+    element.shadowRoot.innerHTML = ''
+    if (!element.graph) return resolve()
+    requestRendering(element, undefined, receiveResult)
 
-  function receiveResult ({ data }) {
-    const { svg, error } = data
-    closeRendering(receiveResult)
-    if (error) {
-      error.message = error.message.trim()
-      return showError(element, error)
+    function receiveResult ({ data }) {
+      const { svg, error } = data
+      closeRendering(receiveResult)
+      if (error) {
+        error.message = error.message.trim()
+        showError(element, error)
+        return resolve(error)
+      }
+      showImage(element, svg)
+      resolve(svg)
     }
-    showImage(element, svg)
-  }
+  })
 }
 
 function tryUpdateGraph (element, script) {
@@ -103,6 +107,7 @@ class GraphvizGraphElement extends HTMLElement {
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
+    this.graphCompleted = Promise.resolve()
   }
 
   get graph () { return this[graphKey] }
@@ -115,7 +120,7 @@ class GraphvizGraphElement extends HTMLElement {
     switch (name) {
       case 'graph':
         this[graphKey] = newValue
-        updateGraph(this)
+        this.graphCompleted = updateGraph(this).catch(error => error)
         break
       case 'scale':
         this[scaleKey] = newValue
@@ -124,7 +129,9 @@ class GraphvizGraphElement extends HTMLElement {
   }
 
   tryGraph (graph) {
-    return tryUpdateGraph(this, graph)
+    const promise = tryUpdateGraph(this, graph)
+    this.graphCompleted = promise.catch(error => error)
+    return promise
   }
 
   static get observedAttributes () { return ['graph', 'scale'] }

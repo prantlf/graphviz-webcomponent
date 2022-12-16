@@ -3,8 +3,6 @@ import { Graphviz } from '@hpcc-js/wasm/graphviz'
 let graphviz
 let fatalError
 
-// if (!self.document) self.document = {} // workaround for a bug in @hpcc-js/wasm
-
 async function receiveRequest ({ data }) {
   const { script } = data
   if (script === undefined) return // prevent endless message loop in tests
@@ -18,7 +16,6 @@ async function receiveRequest ({ data }) {
   }
 }
 
-/* istanbul ignore next */ // covered, but reloading the page resets the log
 function handleRejection (event) {
   event.preventDefault()
   const { message } = event.reason

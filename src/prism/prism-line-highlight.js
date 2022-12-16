@@ -198,8 +198,8 @@ Prism.hooks.add('complete', function completeHook(env) {
   }
 });
 
-globalThis.addEventListener('hashchange', applyHash);
-globalThis.addEventListener('resize', function () {
+addEventListener('hashchange', applyHash);
+addEventListener('resize', function () {
   var actions = [];
   $$('pre[data-line]').forEach(function (pre) {
     actions.push(highlightLines(pre));

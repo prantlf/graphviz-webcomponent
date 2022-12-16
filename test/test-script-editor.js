@@ -138,7 +138,7 @@ test('resizing window re-renders', async () => {
         clientX: window.innerWidth / 2 - 4,
         clientY: window.innerHeight / 2 - 4
       })
-      globalThis.dispatchEvent(event)
+      dispatchEvent(event)
     }
 
     function waitForTime (milliseconds) {

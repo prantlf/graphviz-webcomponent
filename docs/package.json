@@ -1,6 +1,7 @@
 {
   "name": "graphviz-webcomponent-docs",
   "private": true,
+  "type": "module",
   "scripts": {
     "copy:deps": "cp.js ../dist/renderer.min.* js/ && cp.js ../dist/index.min.js* js/",
     "build:dev": "../node_modules/.bin/rollup -c --environment NODE_ENV:development",

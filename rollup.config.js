@@ -1,15 +1,11 @@
 import resolve from '@rollup/plugin-node-resolve'
 import livereload from 'rollup-plugin-livereload'
-import istanbul from 'rollup-plugin-istanbul'
 import { minify } from 'rollup-plugin-swc-minify'
 import { string } from 'rollup-plugin-string'
 import { spawn } from 'child_process'
 
 const watch = process.env.ROLLUP_WATCH
-const coverage = process.env.NODE_ENV === 'development'
-const instanbulOptions = { exclude: ['src/codejar/*', 'src/prism/*', 'test/**/*.js'] }
-const terserOptions = { output: { comments: false } }
-const stringOptions = { include: '**/*.css' }
+const dev = process.env.NODE_ENV === 'development'
 
 export default [
   {
@@ -28,11 +24,10 @@ export default [
     ],
     plugins: [
       resolve(),
-      string(stringOptions),
-      coverage && istanbul(instanbulOptions),
+      string({ include: '**/*.css' }),
       watch && serve(),
       watch && livereload('.'),
-      !(watch || coverage) && minify(terserOptions)
+      !(watch || dev) && minify()
     ],
     watch: { clearScreen: false }
   },
@@ -51,7 +46,9 @@ export default [
         file: 'dist/graph.min.mjs'
       }
     ],
-    plugins: [minify(terserOptions)]
+    plugins: [
+      !(watch || dev) && minify()
+    ]
   },
   {
     input: 'src/script-editor.js',
@@ -69,8 +66,8 @@ export default [
     ],
     plugins: [
       resolve(),
-      string(stringOptions),
-      minify(terserOptions)
+      string({ include: '**/*.css' }),
+      !(watch || dev) && minify()
     ]
   },
   {
@@ -81,8 +78,7 @@ export default [
     },
     plugins: [
       resolve(),
-      coverage && istanbul(instanbulOptions),
-      !(watch || coverage) && minify(terserOptions)
+      !(watch || dev) && minify()
     ]
   }
 ]

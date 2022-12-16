@@ -1,6 +1,14 @@
-/* global describe test expect page */
+import tehanu from 'tehanu'
+import { fail, notStrictEqual, strictEqual } from 'assert'
+import { contain, loadPage, openBrowser, closeBrowser } from './support.js'
 
-const { loadPage } = require('./support')
+const test = tehanu(import.meta.url)
+
+let page
+
+test.before(async () => page = await openBrowser())
+
+test.after(() => process.env.SINGLE_TEST && closeBrowser())
 
 function tryGraph (script) {
   return page.evaluate(script => {
@@ -50,128 +58,126 @@ function getContent () {
     document.querySelector('graphviz-graph').shadowRoot.innerHTML)
 }
 
-async function expectText (text) {
-  expect(await getContent()).toContain(text)
+async function checkTextContent (text) {
+  contain(await getContent(), text)
 }
 
-function expectSVG () {
-  return expectText('<svg')
+function checkSVGContent () {
+  return checkTextContent('<svg')
 }
 
-describe('graphviz-graph', () => {
-  test('loads local @hpcc-js/wasm', async () => {
-    await loadPage('graph', 'delayed')
-    await waitForRenderEvent()
-    await waitForContent()
-    await expectSVG()
-    await getPromise()
-  })
+test('loads local @hpcc-js/wasm', async () => {
+  await loadPage('graph', 'delayed')
+  await waitForRenderEvent()
+  await waitForContent()
+  await checkSVGContent()
+  await getPromise()
+})
 
-  test('updates changed graph', async () => {
-    const first = await getContent()
-    await page.evaluate(() => {
-      return new Promise(resolve => {
-        const graphviz = document.querySelector('graphviz-graph')
-        function onRender () {
-          graphviz.removeEventListener('render', onRender)
-          resolve()
-        }
-        graphviz.addEventListener('render', onRender)
-        graphviz.graph = `
-digraph G {
-  main -> parse -> execute;
-  main -> cleanup;
-}
-`
-      })
-    })
-    const second = await getContent()
-    expect(second).toContain('<svg')
-    expect(first).not.toBe(second)
-  })
-
-  test('updates changed graph with promise', async () => {
-    const first = await getContent()
-    await page.evaluate(() => {
+test('updates changed graph', async () => {
+  const first = await getContent()
+  await page.evaluate(() => {
+    return new Promise(resolve => {
       const graphviz = document.querySelector('graphviz-graph')
+      function onRender () {
+        graphviz.removeEventListener('render', onRender)
+        resolve()
+      }
+      graphviz.addEventListener('render', onRender)
       graphviz.graph = `
 digraph G {
-  main -> cleanup;
+main -> parse -> execute;
+main -> cleanup;
 }
 `
     })
-    expect(await getPromise()).toContain('<svg')
-    const second = await getContent()
-    expect(second).toContain('<svg')
-    expect(first).not.toBe(second)
   })
+  const second = await getContent()
+  contain(second, '<svg')
+  notStrictEqual(first, second)
+})
 
-  test('does not perform trial update with invalid input', async () => {
-    try {
-      await tryGraph('invalid')
-      expect(false).toBeTruthy()
-    } catch {
-      await expectSVG()
-    }
-  })
-
-  test('updates changed graph with invalid content', async () => {
-    await page.evaluate(() => {
-      const graphviz = document.querySelector('graphviz-graph')
-      graphviz.graph = 'invalid'
-    })
-    expect((await getPromise()).message).toBe('syntax error in line 1 near \'invalid\'')
-    await expectText('syntax error in line 1 near \'invalid\'')
-  })
-
-  test('performs trial update with empty input', async () => {
-    await tryGraph('')
-    expect(await getContent()).toBe('')
-  })
-
-  test('performs trial update with valid input', async () => {
-    await tryGraph(`
+test('updates changed graph with promise', async () => {
+  const first = await getContent()
+  await page.evaluate(() => {
+    const graphviz = document.querySelector('graphviz-graph')
+    graphviz.graph = `
 digraph G {
-  main -> parse -> execute;
-  main -> cleanup;
+main -> cleanup;
+}
+`
+  })
+  contain(await getPromise(), '<svg')
+  const second = await getContent()
+  contain(second, '<svg')
+  notStrictEqual(first, second)
+})
+
+test('does not perform trial update with invalid input', async () => {
+  try {
+    await tryGraph('invalid')
+    fail('invalid input')
+  } catch {
+    await checkSVGContent()
+  }
+})
+
+test('updates changed graph with invalid content', async () => {
+  await page.evaluate(() => {
+    const graphviz = document.querySelector('graphviz-graph')
+    graphviz.graph = 'invalid'
+  })
+  strictEqual((await getPromise()).message, 'syntax error in line 1 near \'invalid\'')
+  await checkTextContent('syntax error in line 1 near \'invalid\'')
+})
+
+test('performs trial update with empty input', async () => {
+  await tryGraph('')
+  strictEqual(await getContent(), '')
+})
+
+test('performs trial update with valid input', async () => {
+  await tryGraph(`
+digraph G {
+main -> parse -> execute;
+main -> cleanup;
 }`)
-    await expectSVG()
-  })
+  await checkSVGContent()
+})
 
-  test('stays empty for empty graph', async () => {
-    await page.evaluate(() => {
-      document.querySelector('graphviz-graph').graph = ''
-    })
-    await page.waitForTimeout(100)
-    expect(await getContent()).toBe('')
+test('stays empty for empty graph', async () => {
+  await page.evaluate(() => {
+    document.querySelector('graphviz-graph').graph = ''
   })
+  await page.waitForTimeout(100)
+  strictEqual(await getContent(), '')
+})
 
-  test('loads @hpcc-js/wasm from other URL', async () => {
-    await loadPage('graph', 'other-url')
-    await waitForRenderEvent()
-    await waitForContent()
-    await expectSVG()
-  })
+test('loads @hpcc-js/wasm from other URL', async () => {
+  await loadPage('graph', 'other-url')
+  await waitForRenderEvent()
+  await waitForContent()
+  await checkSVGContent()
+})
 
-  test('changes image scale', async () => {
-    const scale = await page.evaluate(() => {
-      const graphviz = document.querySelector('graphviz-graph')
-      return graphviz.scale
-    })
-    expect(scale).toBeUndefined()
-    const transform = await page.evaluate(() => {
-      const graphviz = document.querySelector('graphviz-graph')
-      graphviz.scale = '0.8'
-      return graphviz.shadowRoot.children[0].style.transform
-    })
-    expect(transform).toBe('scale(0.8)')
+test('changes image scale', async () => {
+  const scale = await page.evaluate(() => {
+    const graphviz = document.querySelector('graphviz-graph')
+    return graphviz.scale
   })
+  strictEqual(scale, undefined)
+  const transform = await page.evaluate(() => {
+    const graphviz = document.querySelector('graphviz-graph')
+    graphviz.scale = '0.8'
+    return graphviz.shadowRoot.children[0].style.transform
+  })
+  strictEqual(transform, 'scale(0.8)')
+})
 
-  test('reports typo in graph script', async () => {
-    await loadPage('graph', 'graph-error')
-    await waitForErrorEvent()
-    await waitForContent()
-    await expectText('Layout was not done')
-    expect((await getPromise()).message).toBe('Layout was not done')
-  })
+test('reports typo in graph script', async () => {
+  await loadPage('graph', 'graph-error')
+  await waitForErrorEvent()
+  await waitForContent()
+  await checkTextContent('Layout was not done')
+  strictEqual((await getPromise()).message, 'Layout was not done')
 })

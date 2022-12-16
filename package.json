@@ -23,6 +23,7 @@
     "dist",
     "src"
   ],
+  "type": "module",
   "browser": "dist/index.min.js",
   "main": "dist/index.min.js",
   "module": "src/index.min.mjs",
@@ -35,42 +36,19 @@
     "build:prod": "rollup -c --environment NODE_ENV:production",
     "watch": "rollup -cw",
     "start": "http-server -p 5000",
-    "check": "NODE_ENV=development jest",
-    "coverage": "rm.js -f coverage/coverage-final.json && nyc report",
-    "test": "npm run check && npm run coverage",
+    "check": "NO_COVERAGE=1 teru-esm test/index.js",
+    "test": "teru-esm test/index.js && c8 report",
     "all": "npm run build:dev && npm test && denolint && npm run build:prod"
   },
-  "jest": {
-    "preset": "jest-puppeteer",
-    "maxWorkers": 4,
-    "testMatch": [
-      "<rootDir>/test/test-*.js"
-    ],
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "<rootDir>/src/*.js"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcov",
-      "text-summary"
-    ],
-    "setupFilesAfterEnv": [
-      "jest-puppeteer-istanbul/lib/setup"
-    ],
-    "reporters": [
-      "default",
-      "jest-puppeteer-istanbul/lib/reporter"
-    ]
-  },
-  "nyc": {
+  "c8": {
+    "excludeAfterRemap": true,
     "exclude": [
-      "src/codejar/*",
-      "src/prism/*"
+      "src/codejar",
+      "src/prism"
     ],
     "reporter": [
       "lcov",
-      "text-summary"
+      "text"
     ],
     "tempDir": "coverage",
     "checkCoverage": true,
@@ -100,17 +78,19 @@
     "@semantic-release/changelog": "6.0.2",
     "@semantic-release/git": "10.0.1",
     "@unixcompat/rm.js": "1.0.0",
+    "c8": "7.12.0",
+    "connect": "3.7.0",
     "denolint": "2.0.5",
     "http-server": "14.1.1",
-    "jest-cli": "29.3.1",
-    "jest-puppeteer": "6.2.0",
-    "jest-puppeteer-istanbul": "0.5.3",
-    "nyc": "15.1.0",
     "puppeteer": "19.4.0",
     "rollup": "3.7.4",
     "rollup-plugin-istanbul": "4.0.0",
     "rollup-plugin-livereload": "2.0.5",
     "rollup-plugin-string": "3.0.0",
-    "rollup-plugin-swc-minify": "1.0.5"
+    "rollup-plugin-swc-minify": "1.0.5",
+    "serve-static": "1.15.0",
+    "tehanu": "1.0.1",
+    "tehanu-repo-coco": "1.0.0",
+    "tehanu-teru": "1.0.0"
   }
 }

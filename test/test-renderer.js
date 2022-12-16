@@ -1,6 +1,14 @@
-/* global describe test expect page */
+import tehanu from 'tehanu'
+import { strictEqual } from 'assert'
+import { contain, loadPage, openBrowser, closeBrowser } from './support.js'
 
-const { loadPage } = require('./support')
+const test = tehanu(import.meta.url)
+
+let page
+
+test.before(async () => page = await openBrowser())
+
+test.after(() => process.env.SINGLE_TEST && closeBrowser())
 
 function renderScript (script) {
   return page.evaluate(script => {
@@ -18,16 +26,14 @@ function renderScript (script) {
   }, script)
 }
 
-describe('renderer', () => {
-  test('renders script', async () => {
-    await loadPage('renderer', 'initialized')
-    const result = await renderScript('digraph G {}')
-    expect(result.svg).toContain('<svg')
-  })
+test('renders script', async () => {
+  await loadPage('renderer', 'initialized')
+  const result = await renderScript('digraph G {}')
+  contain(result.svg, '<svg')
+})
 
-  test('reports invalid script', async () => {
-    const result = await renderScript('invalid')
-    expect(typeof result.error).toBe('object')
-    expect(result.error.message).toContain('syntax error')
-  })
+test('reports invalid script', async () => {
+  const result = await renderScript('invalid')
+  strictEqual(typeof result.error, 'object')
+  contain(result.error.message, 'syntax error')
 })

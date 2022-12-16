@@ -4,7 +4,8 @@ import postcss from 'rollup-plugin-postcss'
 import { minify } from 'rollup-plugin-swc-minify'
 import { spawn } from 'child_process'
 
-const watch = process.env.ROLLUP_WATCH
+const { NODE_ENV, ROLLUP_WATCH: watch } = process.env
+const prod = NODE_ENV === 'production'
 
 export default [
   {
@@ -18,7 +19,7 @@ export default [
       resolve(),
       watch && serve(),
       watch && livereload('.'),
-      !watch && minify({ output: { comments: false } })
+      !watch && prod && minify({ output: { comments: false } })
     ],
     watch: { clearScreen: false }
   },
@@ -28,7 +29,7 @@ export default [
     plugins: [
       postcss({
         extract: true,
-        minimize: !watch,
+        minimize: !watch && prod,
         sourceMap: true
       })
     ]

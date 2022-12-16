@@ -1,30 +1,11 @@
+import getRenderer from './separate-engine'
+
 const graphKey = Symbol('graph')
 const scaleKey = Symbol('scale')
-const { delayWorkerLoading } = window.graphvizWebComponent || {}
-let renderer, rendererUrl
-
-if (!delayWorkerLoading) setTimeout(getRenderer)
-
-function ensureConfiguration () {
-  if (!rendererUrl) {
-    ({
-      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@1.0.0/dist/renderer.min.js'
-    } = window.graphvizWebComponent || {})
-  }
-}
-
-function getRenderer () {
-  if (!renderer) {
-    ensureConfiguration()
-    renderer = new Worker(rendererUrl)
-  }
-  return renderer
-}
 
 function requestRendering (element, script, receiveResult) {
   const renderer = getRenderer()
   renderer.addEventListener('message', receiveResult)
-  ensureConfiguration()
   renderer.postMessage({ script: script || element.graph })
 }
 

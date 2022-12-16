@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width,initial-scale=1">
+  <meta name=description content="Tests @hpcc-js/wasm loaded from unpkg."></meta>
+  <title>Test Renderer Loaded from UNPKG</title>
+</head>
+
+<body>
+  <graphviz-graph graph="
+digraph G {
+  main -> parse -> execute;
+  main -> init;
+  main -> cleanup;
+  execute -> make_string;
+  execute -> printf;
+  init -> make_string;
+  main -> printf;
+  execute -> compare;
+}
+  "></graphviz-graph>
+  <script>
+    graphvizWebComponent = { rendererUrl: 'https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index.min.js' }
+  </script>
+  <script defer src=../../dist/index.min.js></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import tehanu from 'tehanu'
-import { fail, notStrictEqual, strictEqual } from 'assert'
-import { contain, loadPage, openBrowser, closeBrowser } from './support.js'
+import { fail, ok, notStrictEqual, strictEqual } from 'assert'
+import { contain, loadPage, openBrowser, closeBrowser, waitForTime } from './support.js'
 
 const test = tehanu(import.meta.url)
 
@@ -158,6 +158,15 @@ test('loads @hpcc-js/wasm from other URL', async () => {
   await waitForRenderEvent()
   await waitForContent()
   await checkSVGContent()
+  await getPromise()
+})
+
+test('loads bundled @hpcc-js/wasm', async () => {
+  await loadPage('graph', 'bundled')
+  await waitForRenderEvent()
+  await waitForContent()
+  await checkSVGContent()
+  await getPromise()
 })
 
 test('changes image scale', async () => {
@@ -180,4 +189,18 @@ test('reports typo in graph script', async () => {
   await waitForContent()
   await checkTextContent('Layout was not done')
   strictEqual((await getPromise()).message, 'Layout was not done')
+})
+
+test('reports worker failure', async () => {
+  await loadPage('graph', 'unpkg')
+  const result = await getPromise()
+  strictEqual(typeof result, 'object')
+  contain(result.stack, 'Error: Failed to construct \'Worker\'')
+})
+
+test('reports delayedworker failure', async () => {
+  await loadPage('graph', 'unpkg-delayed')
+  const result = await getPromise()
+  strictEqual(typeof result, 'object')
+  contain(result.stack, 'Error: Failed to construct \'Worker\'')
 })

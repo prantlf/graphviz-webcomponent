@@ -68,3 +68,7 @@ export function contain(hay, needle) {
 export function notContain(hay, needle) {
   ok(hay && !hay.includes(needle), `"${hay}" includes no "${needle}"`)
 }
+
+export function waitForTime (milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}

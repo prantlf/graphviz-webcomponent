@@ -28,12 +28,22 @@
   "main": "dist/index.min.js",
   "module": "src/index.min.mjs",
   "exports": {
-    "require": "./dist/index.min.js",
-    "import": "./dist/index.min.mjs"
+    ".": {
+      "require": "./dist/index.min.js",
+      "import": "./dist/index.min.mjs"
+    },
+    "./bundled": {
+      "require": "./dist/index-bundled.min.js",
+      "import": "./dist/index-bundled.min.mjs"
+    },
+    "./unbundled": {
+      "require": "./dist/index.min.js",
+      "import": "./dist/index.min.mjs"
+    }
   },
   "scripts": {
-    "build:dev": "rollup -c --environment NODE_ENV:development",
-    "build:prod": "rollup -c --environment NODE_ENV:production",
+    "build:dev": "rollup -c rollup.config-renderer.js && rollup -c",
+    "build:prod": "rollup -c rollup.config-renderer.js --environment NODE_ENV:production && rollup -c --environment NODE_ENV:production",
     "watch": "rollup -cw",
     "start": "http-server -p 5000",
     "check": "NO_COVERAGE=1 teru-esm test/index.js",
@@ -74,6 +84,7 @@
   },
   "devDependencies": {
     "@hpcc-js/wasm": "2.3.0",
+    "@rollup/plugin-alias": "4.0.2",
     "@rollup/plugin-node-resolve": "15.0.1",
     "@semantic-release/changelog": "6.0.2",
     "@semantic-release/git": "10.0.1",

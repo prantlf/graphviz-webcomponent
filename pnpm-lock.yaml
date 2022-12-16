@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hpcc-js/wasm': 2.3.0
+  '@rollup/plugin-alias': 4.0.2
   '@rollup/plugin-node-resolve': 15.0.1
   '@semantic-release/changelog': 6.0.2
   '@semantic-release/git': 10.0.1
@@ -22,6 +23,7 @@ specifiers:
 
 devDependencies:
   '@hpcc-js/wasm': 2.3.0
+  '@rollup/plugin-alias': 4.0.2_rollup@3.7.4
   '@rollup/plugin-node-resolve': 15.0.1_rollup@3.7.4
   '@semantic-release/changelog': 6.0.2
   '@semantic-release/git': 10.0.1
@@ -183,6 +185,19 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@rollup/plugin-alias/4.0.2_rollup@3.7.4:
+    resolution: {integrity: sha512-1hv7dBOZZwo3SEupxn4UA2N0EDThqSSS+wI1St1TNTBtOZvUchyIClyHcnDcjjrReTPZ47Faedrhblv4n+T5UQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 3.7.4
+      slash: 4.0.0
     dev: true
 
   /@rollup/plugin-node-resolve/15.0.1_rollup@3.7.4:
@@ -1690,6 +1705,11 @@ packages:
 
   /signal-exit/3.0.6:
     resolution: {integrity: sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==}
+    dev: true
+
+  /slash/4.0.0:
+    resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
+    engines: {node: '>=12'}
     dev: true
 
   /statuses/1.5.0:

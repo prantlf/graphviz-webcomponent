@@ -41,6 +41,7 @@
       "import": "./dist/index.min.mjs"
     }
   },
+  "customElements": "dist/custom-elements.json",
   "scripts": {
     "copy:deps": "cp.js src/*.json dist/",
     "build:dev": "rollup -c rollup.config-renderer.js && rollup -c",

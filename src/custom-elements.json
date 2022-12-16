@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "Web Components for rendering a Graphviz graph and for editing its source text with syntax highlighting.",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/graph.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "GraphvizGraphElement",
+          "description": "Generates and displays an image from a Graphviz graph source.",
+          "members": [
+            {
+              "kind": "method",
+              "name": "tryGraph",
+              "description": "The method `tryGraph(graph: string): Promise<string>` can be called to conditionally set the `graph` attribute.\n\nIf rendering the graph script succeeds, the input value will be set to the `graph` attribute, the `graphviz-graph` element will be updated (including triggering the `render` event) and the Promise will be resolved with the output SVG. If rendering the graph script fails, the `graphviz-graph` element will remain unchanged (no `error` event triggered) and the Promise will be rejected with the error."
+            },
+            {
+              "kind": "field",
+              "name": "graphCompleted",
+              "description": "The property `graphCompleted` returns a promise with the result of the last rendering.\n\nIf the rendering hasn't been finished yet, the promise will be pending. Whenever the `graphviz-graph` is being re-rendered again, the property `graphCompleted` will return a new promise. If rendering succeeds, the promise will be resolved with a string containing the SVG content. If rendering fails, the promise will be resolved with am object `{ message }` containing the error message.\n\nThe property `graphCompleted` is an alternative to waiting for the event `render`.",
+              "privacy": "public",
+              "type": {
+                "text": "object"
+              },
+              "default": "Resolved promise",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "graph",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "graph",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "scale",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "attribute": "scale",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "graph",
+              "description": "Supplies the graph source in the Graphviz format.\n\nWhenever the `graph` attribute changes, the element content will be re-generated and re-rendered. If this attribute is empty, the element content will be empty. If generating of the image fails, the element will display an error message.",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "graph"
+            },
+            {
+              "name": "scale",
+              "description": "Sets the \"zoom\" level for the SVG content.\n\nIt has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "fieldName": "scale"
+            }
+          ],
+          "events": [
+            {
+              "name": "render",
+              "description": "Whenever the SVG image inside the `graphviz-graph` element is successfully updated, the custom event `render` with the SVG source as details will be triggered on the element.",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "error",
+              "description": "If the rendering fails, the custom event `error` with the `Error` instance as details will be triggered.",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "graphviz-graph",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GraphvizGraphElement",
+          "declaration": {
+            "name": "GraphvizGraphElement",
+            "module": "src/graph.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "graphviz-graph",
+          "declaration": {
+            "name": "GraphvizGraphElement",
+            "module": "src/graph.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/script-editor.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "GraphvizScriptEditorElement",
+          "description": "Shows a Graphviz graph source with syntax highlighting and allows its editing.",
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "tab",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'  '",
+              "attribute": "tab",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "className",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "class",
+              "reflects": true
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "description": "Accepts the graph source in the Graphviz format. Whenever this attribute changes, the editor will be re-rendered. The `value` attribute reflects the immediate changes made in the editor.",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "name": "tab",
+              "description": "Specifies characters inserted when the `Tab` key is pressed. It is two spaces (`\"  \"`) by default.",
+              "type": {
+                "text": "string"
+              },
+              "default": "'  '",
+              "fieldName": "tab"
+            },
+            {
+              "name": "class",
+              "description": "Controls features by special class names:\n\n* `line-numbers` will add line numbers to the left border of the editor.\n* `match-braces` will show the second brace brace, when the first one is hovered above.\n* `rainbow-braces` will show pairs of braces with different colours.",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "className"
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "description": "Whenever the content of the editor changes, the custom event `input` with the source script as details will be triggered on the element. The attribute `value` will contain the latest editor content.",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "graphviz-script-editor",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "GraphvizScriptEditorElement",
+          "declaration": {
+            "name": "GraphvizScriptEditorElement",
+            "module": "src/script-editor.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "graphviz-script-editor",
+          "declaration": {
+            "name": "GraphvizScriptEditorElement",
+            "module": "src/script-editor.js"
+          }
+        }
+      ]
+    }
+  ]
+}

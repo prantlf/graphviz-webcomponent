@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/prantlf/graphviz-webcomponent/compare/v1.0.0...v1.1.0) (2022-12-16)
+
+
+### Features
+
+* Introduce a script with the renderer script bundled ([5eced5f](https://github.com/prantlf/graphviz-webcomponent/commit/5eced5f5b265108fb15c2e59d1611bbfaa04861c))
+
 # [1.0.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.5.1...v1.0.0) (2022-12-16)
 
 

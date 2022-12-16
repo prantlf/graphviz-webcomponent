@@ -1,3 +1,21 @@
+# [1.0.0](https://github.com/prantlf/graphviz-webcomponent/compare/v0.5.1...v1.0.0) (2022-12-16)
+
+
+### Bug Fixes
+
+* Upgrade dependencies ([6cf8f43](https://github.com/prantlf/graphviz-webcomponent/commit/6cf8f435c762014237e458a54e9975351de51abe))
+
+
+### Features
+
+* Add property graphCompleted ([8ccca85](https://github.com/prantlf/graphviz-webcomponent/commit/8ccca8520c423f261fc2b2bb060b8d31e315e4d9))
+* Remove wasmFolder from configuration ([c91e849](https://github.com/prantlf/graphviz-webcomponent/commit/c91e849b823193ca9e8374f071c5134b7351c6eb))
+
+
+### BREAKING CHANGES
+
+* The value of `wasmFolder` will be ignored. Simply stop passing this input parameter in. This shouldn't break anything, but you might want to simplify your code.
+
 ## [0.5.1](https://github.com/prantlf/graphviz-webcomponent/compare/v0.5.0...v0.5.1) (2022-01-28)
 
 

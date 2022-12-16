@@ -42,13 +42,16 @@
     }
   },
   "scripts": {
+    "copy:deps": "cp.js src/*.json dist/",
     "build:dev": "rollup -c rollup.config-renderer.js && rollup -c",
     "build:prod": "rollup -c rollup.config-renderer.js --environment NODE_ENV:production && rollup -c --environment NODE_ENV:production",
     "watch": "rollup -cw",
     "start": "http-server -p 5000",
     "check": "NO_COVERAGE=1 teru-esm test/index.js",
     "test": "teru-esm test/index.js && c8 report",
-    "all": "npm run build:dev && npm test && denolint && npm run build:prod"
+    "lint": "denolint && jsonlint -DjklnR src/*.json",
+    "fix": "jsonlint -DilnR src/*.json",
+    "all": "npm run build:dev && npm test && npm run lint && npm run build:prod && npm run copy:deps"
   },
   "c8": {
     "excludeAfterRemap": true,
@@ -84,10 +87,12 @@
   },
   "devDependencies": {
     "@hpcc-js/wasm": "2.3.0",
+    "@prantlf/jsonlint": "11.7.0",
     "@rollup/plugin-alias": "4.0.2",
     "@rollup/plugin-node-resolve": "15.0.1",
     "@semantic-release/changelog": "6.0.2",
     "@semantic-release/git": "10.0.1",
+    "@unixcompat/cp.js": "1.0.0",
     "@unixcompat/rm.js": "1.0.0",
     "c8": "7.12.0",
     "connect": "3.7.0",

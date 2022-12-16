@@ -13,6 +13,7 @@ Features:
 * Lightweight [WebComponents] (graph 1.7 kB minified, 0.8 kB gzipped, 0.7 kB brotlied, script editor 24.1 kB minified, 9.2 kB gzipped, 8.2 kB brotlied).
 * Renderer downloaded in the background (613 kB minified, 475 kB gzipped, 473 kB brotlied).
 * Bundled renderer available, if you don't need to load the renderer script in the background (639 kB minified, 485 kB gzipped, 481 kB brotlied).
+* [IntelliSense](#intellisense) for VS Code.
 
 Related tools:
 
@@ -107,9 +108,9 @@ The custom element `graphviz-graph` generates an SVG and displays it in its shad
 
 #### Attributes
 
-The attribute `graph` supplies the graph script in the [Graphviz] format. Whenever the `graph` attribute changes, the graph will be re-generated and re-rendered. If it is empty, the `graphviz-graph` will be empty. If rendering of the graph image fails, the element will display the error message.
+The attribute `graph` supplies the graph script in the [Graphviz] format. Whenever the `graph` attribute changes, the element content will be re-generated and re-rendered. If this attribute is empty, the element content will be empty. If generating of the image fails, the element will display an error message.
 
-The attribute `scale` sets the "zoom" level to the SVG content. It has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.
+The attribute `scale` sets the "zoom" level for the SVG content. It has to be convertible to a real number greater than `0`. Values in the interval `(0;1>)` decrease the image size, values greater than `1` increase it. The default value is `1`, which means the original size. The value can be convertent to percents of the original size by multiplying by `100`.
 
 #### Properties
 
@@ -117,7 +118,7 @@ The property `graphCompleted` returns a promise with the result of the last rend
 
 #### Events
 
-Whenever the SVG inside the `graphviz-graph` element is successfully updated, the custom event `render` with the SVG source as details will be triggered on the element. If the rendering fails, the custom event `error` with the `Error` instance as details will be triggered.
+Whenever the SVG image inside the `graphviz-graph` element is successfully updated, the custom event `render` with the SVG source as details will be triggered on the element. If the rendering fails, the custom event `error` with the `Error` instance as details will be triggered.
 
 #### Methods
 
@@ -161,7 +162,7 @@ import 'graphviz-webcomponent/bundled'
 
 ### graphviz-script-editor
 
-The custom element `graphviz-script-editor` shows a graph script with syntax highlighting and allows its editing.
+The custom element `graphviz-script-editor` shows a graph source with syntax highlighting and allows its editing.
 
 ```html
 <graphviz-script-editor value="..." tab="..." class="..."></graphviz-graph>
@@ -169,19 +170,29 @@ The custom element `graphviz-script-editor` shows a graph script with syntax hig
 
 #### Attributes
 
-The attribute `value` accepts the graph script in the [Graphviz] format. Whenever the `value` attribute changes, the editor will be re-rendered. The `value` attribute reflects the immediate changes made in the editor.
+The attribute `value` accepts the graph script in the [Graphviz] format. Whenever this attribute changes, the editor will be re-rendered. The `value` attribute reflects the immediate changes made in the editor.
 
 The attribute `tab` can specify characters inserted when the `Tab` key is pressed. It is two spaces (`"  "`) by default.
 
-The attribute `class` can control features by special class names:
+The attribute `class` controls features by special class names:
 
-* `line-numbers` will add line numbers to tyhe left border of the editor.
+* `line-numbers` will add line numbers to the left border of the editor.
 * `match-braces` will show the second brace brace, when the first one is hovered above.
-* `rainbow-braces` will show pairs of braces with different colours..
+* `rainbow-braces` will show pairs of braces with different colours.
 
 #### Events
 
 Whenever the content of the editor changes, the custom event `input` with the source script as details will be triggered on the element. The attribute `value` will contain the latest editor content.
+
+## IntelliSense
+
+The language support in the VS Code editor can offer auto-completion and hover information for custom elements. To enable this feature for custom elements in this package, insert the following property to `settings.json`:
+
+```json
+"html.customData": ["node_modules/graphviz-webcomponent/dist/html-custom-data.json"]
+```
+
+You will need to restart the VS Code to have this change applied.
 
 ## License
 

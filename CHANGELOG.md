@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/prantlf/graphviz-webcomponent/compare/v1.1.0...v1.2.0) (2022-12-16)
+
+
+### Features
+
+* Add custom elements manifest ([ba475eb](https://github.com/prantlf/graphviz-webcomponent/commit/ba475eb26b77091403ed3433c7199402964aa042))
+* Add IntelliSense support for VS Code ([8d081a8](https://github.com/prantlf/graphviz-webcomponent/commit/8d081a80e7b5adb9b382264475fec513b5009296))
+
 # [1.1.0](https://github.com/prantlf/graphviz-webcomponent/compare/v1.0.0...v1.1.0) (2022-12-16)
 
 

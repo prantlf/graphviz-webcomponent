@@ -59,10 +59,10 @@ Show a script editor and render the edited content to a graph:
   }
 "></graphviz-script-editor>
 <graphviz-graph id=graph></graphviz-graph>
-<script type=module>>
+<script type=module>
   import 'https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index.min.mjs'
   document.getElementById('source').addEventListener('input', event =>
-    document.getElementById('graph').graph = event.details)
+    if (event instanceof CustomEvent) { document.getElementById('graph').graph = event.detail })
 </script>
 ```
 

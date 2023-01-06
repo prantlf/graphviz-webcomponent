@@ -2,11 +2,14 @@ import getRenderer from "./separate-engine";
 
 const graphKey = Symbol("graph");
 const scaleKey = Symbol("scale");
+// Use this to assign a unique ID to each render.
+let render_id = Number.MIN_SAFE_INTEGER;
 
 function requestRendering(element, script, receiveResult) {
   const renderer = getRenderer();
   renderer.addEventListener("message", receiveResult);
-  renderer.postMessage({ script: script || element.graph });
+  renderer.postMessage({ script: script || element.graph, render_id });
+  return render_id++;
 }
 
 function closeRendering(receiveResult) {
@@ -48,10 +51,18 @@ function updateGraph(element) {
   return new Promise((resolve) => {
     element.shadowRoot.innerHTML = "";
     if (!element.graph) return resolve();
-    requestRendering(element, undefined, receiveResult);
+    const assigned_render_id = requestRendering(
+      element,
+      undefined,
+      receiveResult
+    );
 
     function receiveResult({ data }) {
-      const { svg, error } = data;
+      const { svg, error, render_id } = data;
+      if (assigned_render_id !== render_id) {
+        // This render was for a different request. Ignore it.
+        return;
+      }
       closeRendering(receiveResult);
       if (error) {
         error.message = error.message.trim();
@@ -71,10 +82,14 @@ function tryUpdateGraph(element, script) {
       element.shadowRoot.innerHTML = "";
       return resolve();
     }
-    requestRendering(element, script, receiveResult);
+    const assigned_render_id = requestRendering(element, script, receiveResult);
 
     function receiveResult({ data }) {
-      const { svg, error } = data;
+      const { svg, error, render_id } = data;
+      if (assigned_render_id !== render_id) {
+        // This render was for a different request. Ignore it.
+        return;
+      }
       closeRendering(receiveResult);
       if (error) return reject(error);
       element[graphKey] = script;

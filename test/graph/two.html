@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <graphviz-graph graph="
+  <graphviz-graph id="g1" graph="
 digraph G {
   main -> parse -> execute;
   main -> init;
@@ -18,6 +18,12 @@ digraph G {
   init -> make_string;
   main -> printf;
   execute -> compare;
+}
+  "></graphviz-graph>
+  <graphviz-graph id="g2" graph="
+digraph H {
+  main -> parse -> execute;
+  main -> cleanup;
 }
   "></graphviz-graph>
   <script>

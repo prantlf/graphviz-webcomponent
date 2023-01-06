@@ -2,11 +2,16 @@ import getRenderer from './separate-engine'
 
 const graphKey = Symbol('graph')
 const scaleKey = Symbol('scale')
+// Use this to assign a unique ID to each render. Messages with the rendered
+// SVG will be received by multiple graphs, if multiple graphs dispatched
+// a request for rendering.
+let renderId = 1
 
 function requestRendering (element, script, receiveResult) {
   const renderer = getRenderer()
   renderer.addEventListener('message', receiveResult)
-  renderer.postMessage({ script: script || element.graph })
+  renderer.postMessage({ script: script || element.graph, renderId })
+  return renderId++
 }
 
 function closeRendering (receiveResult) {
@@ -49,9 +54,12 @@ function updateGraph (element) {
     element.shadowRoot.innerHTML = ''
     if (!element.graph) return resolve()
     requestRendering(element, undefined, receiveResult)
+    const assignedRenderId = requestRendering(element, undefined, receiveResult)
 
     function receiveResult ({ data }) {
-      const { svg, error } = data
+      const { svg, error, renderId } = data
+      // This render was for a different request. Ignore it.
+      if (assignedRenderId !== renderId) return
       closeRendering(receiveResult)
       if (error) {
         error.message = error.message.trim()
@@ -71,10 +79,12 @@ function tryUpdateGraph (element, script) {
       element.shadowRoot.innerHTML = ''
       return resolve()
     }
-    requestRendering(element, script, receiveResult)
+    const assignedRenderId = requestRendering(element, script, receiveResult)
 
     function receiveResult ({ data }) {
-      const { svg, error } = data
+      const { svg, error, renderId } = data
+      // This render was for a different request. Ignore it.
+      if (assignedRenderId !== renderId) return
       closeRendering(receiveResult)
       if (error) return reject(error)
       element[graphKey] = script

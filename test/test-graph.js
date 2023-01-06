@@ -1,6 +1,6 @@
 import tehanu from 'tehanu'
-import { fail, ok, notStrictEqual, strictEqual } from 'assert'
-import { contain, loadPage, openBrowser, closeBrowser, waitForTime } from './support.js'
+import { fail, notStrictEqual, strictEqual } from 'assert'
+import { contain, loadPage, openBrowser, closeBrowser } from './support.js'
 
 const test = tehanu(import.meta.url)
 
@@ -10,60 +10,60 @@ test.before(async () => page = await openBrowser())
 
 test.after(() => process.env.SINGLE_TEST && closeBrowser())
 
-function tryGraph (script) {
-  return page.evaluate(script => {
-    const graphviz = document.querySelector('graphviz-graph')
+function tryGraph (script, id) {
+  return page.evaluate((script, id) => {
+    const graphviz = document.querySelector(id ? `#${id}` : 'graphviz-graph')
     return graphviz.tryGraph(script)
-  }, script)
+  }, script, id)
 }
 
-async function waitForContent () {
-  await page.waitForFunction(() => {
-    const graphviz = document.querySelector('graphviz-graph')
+async function waitForContent (id) {
+  await page.waitForFunction(id => {
+    const graphviz = document.querySelector(id ? `#${id}` : 'graphviz-graph')
     return graphviz && graphviz.shadowRoot.innerHTML !== ''
-  })
+  }, id)
 }
 
-async function waitForRenderEvent () {
-  await page.evaluate(() =>
+async function waitForRenderEvent (id) {
+  await page.evaluate(id =>
     new Promise(resolve => {
-      const graphviz = document.querySelector('graphviz-graph')
+      const graphviz = document.querySelector(id ? `#${id}` : 'graphviz-graph')
       function onRender () {
         graphviz.removeEventListener('render', onRender)
         resolve()
       }
       graphviz.addEventListener('render', onRender)
-    }))
+    }), id)
 }
 
-async function waitForErrorEvent () {
-  await page.evaluate(() =>
+async function waitForErrorEvent (id) {
+  await page.evaluate(id =>
     new Promise(resolve => {
-      const graphviz = document.querySelector('graphviz-graph')
+      const graphviz = document.querySelector(id ? `#${id}` : 'graphviz-graph')
       function onRender () {
         graphviz.removeEventListener('error', onRender)
         resolve()
       }
       graphviz.addEventListener('error', onRender)
-    }))
+    }), id)
 }
 
-function getPromise () {
-  return page.evaluate(() =>
-    document.querySelector('graphviz-graph').graphCompleted)
+function getPromise (id) {
+  return page.evaluate(id =>
+    document.querySelector(id ? `#${id}` : 'graphviz-graph').graphCompleted, id)
 }
 
-function getContent () {
-  return page.evaluate(() =>
-    document.querySelector('graphviz-graph').shadowRoot.innerHTML)
+function getContent (id) {
+  return page.evaluate(id =>
+    document.querySelector(id ? `#${id}` : 'graphviz-graph').shadowRoot.innerHTML, id)
 }
 
-async function checkTextContent (text) {
-  contain(await getContent(), text)
+async function checkTextContent (text, id) {
+  contain(await getContent(id), text)
 }
 
-function checkSVGContent () {
-  return checkTextContent('<svg')
+function checkSVGContent (id) {
+  return checkTextContent('<svg', id)
 }
 
 test('loads local @hpcc-js/wasm', async () => {
@@ -151,6 +151,57 @@ test('stays empty for empty graph', async () => {
   })
   await page.waitForTimeout(100)
   strictEqual(await getContent(), '')
+})
+
+test('loads local @hpcc-js/wasm on a page with two graphs', async () => {
+  await loadPage('graph', 'two')
+  await Promise.all([waitForRenderEvent('g1'), waitForRenderEvent('g2')])
+  await Promise.all([waitForContent('g1'), waitForContent('g2')])
+  await Promise.all([checkSVGContent('g1'), checkSVGContent('g2')])
+  await Promise.all([getPromise('g1'), getPromise('g2')])
+})
+
+test('updates boths graphs independently', async () => {
+  const [first, second] = await Promise.all([getContent('g1'), getContent('g2')])
+  notStrictEqual(first, second)
+  const [first2, second2] = await page.evaluate(() => {
+    const g1 = document.getElementById('g1')
+    g1.graph = `
+digraph G {
+main -> cleanup;
+}
+`
+    const g2 = document.getElementById('g2')
+    document.getElementById('g2').graph = `
+digraph H {
+main -> execute;
+}
+`
+    return Promise.all([g1.graphCompleted, g2.graphCompleted])
+  })
+  contain(first2, '<svg')
+  contain(second2, '<svg')
+  notStrictEqual(first2, second2)
+  notStrictEqual(first, first2)
+  notStrictEqual(second, second2)
+})
+
+test('updates boths graphs independently using tryGraph', async () => {
+  const [first, second] = await page.evaluate((script1, script2) => Promise.all([
+    document.getElementById('g1').tryGraph(script1),
+    document.getElementById('g2').tryGraph(script2)
+  ]), `
+digraph I {
+main -> start;
+}
+`, `
+digraph J {
+main -> end;
+}
+`)
+  contain(first, '<svg')
+  contain(second, '<svg')
+  notStrictEqual(first, second)
 })
 
 test('loads @hpcc-js/wasm from other URL', async () => {

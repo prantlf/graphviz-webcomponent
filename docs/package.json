@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "copy:deps": "cp.js ../dist/renderer.min.* js/ && cp.js ../dist/index.min.js* js/",
+    "copy:deps": "cp-j ../dist/renderer.min.* js/ && cp-j ../dist/index.min.js* js/",
     "build:dev": "../node_modules/.bin/rollup -c",
     "build:prod": "../node_modules/.bin/rollup -c --environment NODE_ENV:production",
     "watch": "../node_modules/.bin/rollup -cw",

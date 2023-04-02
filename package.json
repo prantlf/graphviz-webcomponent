@@ -1,6 +1,6 @@
 {
   "name": "graphviz-webcomponent",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "WebComponents for rendering a Graphviz graph and for editing its source script with syntax highlighting.",
   "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantlf.tk/)",
   "contributors": [

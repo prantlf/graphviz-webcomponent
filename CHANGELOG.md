@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/prantlf/graphviz-webcomponent/compare/v1.2.3...v2.0.0) (2023-04-02)
+
+
+### Features
+
+* Make the update event of graphviz-script-editor bubble ([0aa7fdf](https://github.com/prantlf/graphviz-webcomponent/commit/0aa7fdf3810f507d9a9e04d1cecea2491eb07514))
+* Rename the custom event of graphviz-script-editor from "input" to "update" ([2d6bcd6](https://github.com/prantlf/graphviz-webcomponent/commit/2d6bcd6bb6d0ad49da0015cdb9914d822bf5508d))
+
+
+### BREAKING CHANGES
+
+* If you were listening to the `input` event, change the event name
+to `update`. The event `detail` didn't change - it still contains the updated script.
+Why did I rename the event? The original `input` event is triggered as composed
+and bubbled out of the shadow DOM. The `input` event handler caught it. The custom
+`input` event just followed it, which made its processing more difficult - for example,
+by checking the class of the event to be `CustomEvent`. Using a different event type
+- `update` - will avoid duplicate event processing without any extra conditions.
+
 ## [1.2.3](https://github.com/prantlf/graphviz-webcomponent/compare/v1.2.2...v1.2.3) (2023-04-02)
 
 

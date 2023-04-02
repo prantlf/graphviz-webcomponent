@@ -58,7 +58,7 @@
     "all": "npm run build:dev && npm test && npm run lint && npm run build:prod && npm run copy:deps"
   },
   "c8": {
-    "excludeAfterRemap": false,
+    "excludeAfterRemap": true,
     "exclude": [
       "src/codejar",
       "src/prism"
@@ -67,11 +67,7 @@
       "lcov",
       "text"
     ],
-    "checkCoverage": false,
-    "branches": 100,
-    "functions": 100,
-    "lines": 100,
-    "statements": 100
+    "100": true
   },
   "release": {
     "plugins": [
@@ -90,13 +86,13 @@
   },
   "devDependencies": {
     "@hpcc-js/wasm": "2.9.0",
+    "@prantlf/c8": "7.13.1",
     "@prantlf/jsonlint": "14.0.2",
     "@rollup/plugin-alias": "4.0.3",
     "@rollup/plugin-node-resolve": "15.0.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@unixcompat/cp.js": "3.0.0",
-    "c8": "7.13.0",
     "connect": "3.7.0",
     "denolint": "2.0.7",
     "http-server": "14.1.1",

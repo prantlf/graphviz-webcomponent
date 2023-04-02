@@ -37,7 +37,7 @@ ${mainStyle}
 }
 
 function triggerUpdateEvent (element, type, detail) {
-  element.dispatchEvent(new CustomEvent('update', { detail }))
+  element.dispatchEvent(new CustomEvent('update', { bubbles: true, detail }))
 }
 
 function getFeatureClasses (element) {

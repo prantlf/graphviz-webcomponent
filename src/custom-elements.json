@@ -186,8 +186,8 @@
           ],
           "events": [
             {
-              "name": "input",
-              "description": "Whenever the content of the editor changes, the custom event `input` with the source script as details will be triggered on the element. The attribute `value` will contain the latest editor content.",
+              "name": "update",
+              "description": "Whenever the content of the editor changes, the custom event `update` with the source script as details will be triggered on the element. The attribute `value` will contain the latest editor content.",
               "type": {
                 "text": "CustomEvent"
               }

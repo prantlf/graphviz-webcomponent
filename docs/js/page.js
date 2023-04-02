@@ -112,7 +112,7 @@ function saveAsText () {
   downloadFile(new Blob([graph.graph], { type: 'text/plain' }))
 }
 
-source.addEventListener('input', scheduleUpdateGraph)
+source.addEventListener('update', scheduleUpdateGraph)
 graph.addEventListener('render', rememberImage)
 graph.addEventListener('error', forgetImage)
 saveSVG.addEventListener('click', saveAsSVG)

@@ -36,8 +36,8 @@ ${mainStyle}
   return template
 }
 
-function triggerEvent (element, type, detail) {
-  element.dispatchEvent(new CustomEvent(type, { detail }))
+function triggerUpdateEvent (element, type, detail) {
+  element.dispatchEvent(new CustomEvent('update', { detail }))
 }
 
 function getFeatureClasses (element) {
@@ -71,7 +71,7 @@ function createEditor (element) {
     newCode = normalizeLineBreaks(newCode)
     if (element.value !== newCode) {
       element[valueKey] = newCode
-      triggerEvent(element, 'input', newCode)
+      triggerUpdateEvent(element, newCode)
     }
   })
 }

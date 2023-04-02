@@ -1,4 +1,5 @@
 import tehanu from 'tehanu'
+import { ok } from 'assert'
 import { contain, notContain, loadPage, openBrowser, closeBrowser } from './support.js'
 
 const test = tehanu(import.meta.url)
@@ -61,6 +62,13 @@ test('updates script', async () => {
 })
 
 test('updates script by typing', async () => {
+  await page.evaluate(() => {
+    window.updateCounter = 0
+    const graphviz = document.querySelector('graphviz-script-editor')
+    graphviz.addEventListener('update', () => {
+      ++window.updateCounter
+    })
+  })
   await page.click('graphviz-script-editor')
   await page.keyboard.press('End')
   await page.keyboard.press('ArrowLeft')
@@ -68,6 +76,8 @@ test('updates script by typing', async () => {
   await page.keyboard.press('ArrowLeft')
   await page.keyboard.press('I')
   await expectScript('HI')
+  const updateCounter = await page.evaluate(() => window.updateCounter)
+  ok(updateCounter > 0)
 })
 
 test('updates options', async () => {

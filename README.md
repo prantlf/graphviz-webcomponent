@@ -61,9 +61,9 @@ Show a script editor and render the edited content to a graph:
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>
   import 'https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index.min.mjs'
-  // Skip the original input event, process the second custom one with the new value
-  document.getElementById('source').addEventListener('input', event =>
-    if (event instanceof CustomEvent) { document.getElementById('graph').graph = event.detail })
+  document.getElementById('source').addEventListener('update', event => {
+    document.getElementById('graph').graph = event.detail
+  })
 </script>
 ```
 
@@ -183,7 +183,7 @@ The attribute `class` controls features by special class names:
 
 #### Events
 
-Whenever the content of the editor changes, the custom event `input` with the source script as details will be triggered on the element. The attribute `value` will contain the latest editor content.
+Whenever the content of the editor changes, the custom event `update` with the source script as details will be triggered on the element. The attribute `value` will contain the latest editor content.
 
 ## IntelliSense
 
@@ -194,6 +194,8 @@ The language support in the VS Code editor can offer auto-completion and hover i
 ```
 
 You will need to restart the VS Code to have this change applied.
+
+If your IDE accepts the [custom elements manifest], you will find it packaged at `node_modules/graphviz-webcomponent/dist/custom-elements.json`.
 
 ## License
 
@@ -214,3 +216,4 @@ Licensed under the MIT license.
 [NPM]: https://docs.npmjs.com/cli/npm
 [Yarn]: https://classic.yarnpkg.com/docs/cli/
 [PNPM]: https://pnpm.js.org/pnpm-cli
+[custom elements manifest]: https://github.com/webcomponents/custom-elements-manifest

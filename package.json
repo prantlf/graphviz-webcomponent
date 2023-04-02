@@ -86,7 +86,7 @@
     ]
   },
   "devDependencies": {
-    "@hpcc-js/wasm": "2.8.0",
+    "@hpcc-js/wasm": "2.9.0",
     "@prantlf/jsonlint": "14.0.2",
     "@rollup/plugin-alias": "4.0.3",
     "@rollup/plugin-node-resolve": "15.0.1",
@@ -97,7 +97,7 @@
     "connect": "3.7.0",
     "denolint": "2.0.7",
     "http-server": "14.1.1",
-    "puppeteer": "19.7.5",
+    "puppeteer": "19.8.2",
     "rollup": "3.20.2",
     "rollup-plugin-livereload": "2.0.5",
     "rollup-plugin-string": "3.0.0",

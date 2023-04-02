@@ -3,6 +3,9 @@
   "version": "1.2.2",
   "description": "WebComponents for rendering a Graphviz graph and for editing its source script with syntax highlighting.",
   "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantlf.tk/)",
+  "contributors": [
+    "Bryan A. Jones <bjones@ece.msstate.edu> (http://www.ece.msstate.edu/~bjones)"
+  ],
   "keywords": [
     "graphviz",
     "webcomponent",

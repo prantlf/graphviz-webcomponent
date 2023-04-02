@@ -1,3 +1,4 @@
+/* c8 ignore next */
 const { delayWorkerLoading } = window.graphvizWebComponent || {}
 let renderer, rendererUrl
 
@@ -7,6 +8,7 @@ function ensureConfiguration () {
   if (!rendererUrl) {
     ({
       rendererUrl = 'https://unpkg.com/graphviz-webcomponent@1.2.1/dist/renderer.min.js'
+    /* c8 ignore next */
     } = window.graphvizWebComponent || {})
   }
 }

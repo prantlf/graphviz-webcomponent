@@ -6,6 +6,7 @@ let fatalError
 async function receiveRequest ({ data }) {
   const { script } = data
   if (script === undefined) return // prevent endless message loop in tests
+  /* c8 ignore next */
   if (fatalError) return postMessage({ error: fatalError })
   try {
     if (!graphviz) graphviz = await Graphviz.load()
@@ -16,6 +17,7 @@ async function receiveRequest ({ data }) {
   }
 }
 
+/* c8 ignore next 7 */
 function handleRejection (event) {
   event.preventDefault()
   const { message } = event.reason

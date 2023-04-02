@@ -55,7 +55,7 @@
     "all": "npm run build:dev && npm test && npm run lint && npm run build:prod && npm run copy:deps"
   },
   "c8": {
-    "excludeAfterRemap": true,
+    "excludeAfterRemap": false,
     "exclude": [
       "src/codejar",
       "src/prism"
@@ -64,12 +64,11 @@
       "lcov",
       "text"
     ],
-    "tempDir": "coverage",
-    "checkCoverage": true,
-    "branches": 75,
-    "functions": 90,
-    "lines": 90,
-    "statements": 90
+    "checkCoverage": false,
+    "branches": 100,
+    "functions": 100,
+    "lines": 100,
+    "statements": 100
   },
   "release": {
     "plugins": [

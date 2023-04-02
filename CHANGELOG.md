@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/prantlf/graphviz-webcomponent/compare/v1.2.2...v1.2.3) (2023-04-02)
+
+
+### Bug Fixes
+
+* Allow >1 graph on a webpage. ([3e04917](https://github.com/prantlf/graphviz-webcomponent/commit/3e04917d623854291d47b69fd14261d373d16e49))
+
 ## [1.2.2](https://github.com/prantlf/graphviz-webcomponent/compare/v1.2.1...v1.2.2) (2023-04-02)
 
 

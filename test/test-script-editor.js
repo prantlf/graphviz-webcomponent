@@ -60,6 +60,16 @@ test('updates script', async () => {
   await expectScript('H')
 })
 
+test('updates script by typing', async () => {
+  await page.click('graphviz-script-editor')
+  await page.keyboard.press('End')
+  await page.keyboard.press('ArrowLeft')
+  await page.keyboard.press('ArrowLeft')
+  await page.keyboard.press('ArrowLeft')
+  await page.keyboard.press('I')
+  await expectScript('HI')
+})
+
 test('updates options', async () => {
   await page.evaluate(() => {
     const graphviz = document.querySelector('graphviz-script-editor')

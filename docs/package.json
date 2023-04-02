@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "copy:deps": "cp.js ../dist/renderer.min.* js/ && cp.js ../dist/index.min.js* js/",
+    "copy:deps": "cp-j ../dist/renderer.min.* js/ && cp-j ../dist/index.min.js* js/",
     "build:dev": "../node_modules/.bin/rollup -c",
     "build:prod": "../node_modules/.bin/rollup -c --environment NODE_ENV:production",
     "watch": "../node_modules/.bin/rollup -cw",
@@ -11,8 +11,8 @@
     "test": "../node_modules/.bin/denolint && npm run build:prod && npm run copy:deps"
   },
   "devDependencies": {
-    "@unixcompat/cp.js": "1.0.0",
-    "postcss": "8.4.20",
+    "@unixcompat/cp.js": "3.0.0",
+    "postcss": "8.4.21",
     "rollup-plugin-postcss": "4.0.2"
   }
 }

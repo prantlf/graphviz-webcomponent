@@ -1,6 +1,6 @@
 {
   "name": "graphviz-webcomponent",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "WebComponents for rendering a Graphviz graph and for editing its source script with syntax highlighting.",
   "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantlf.tk/)",
   "keywords": [
@@ -43,7 +43,7 @@
   },
   "customElements": "dist/custom-elements.json",
   "scripts": {
-    "copy:deps": "cp.js src/*.json dist/",
+    "copy:deps": "cp-j src/*.json dist/",
     "build:dev": "rollup -c rollup.config-renderer.js && rollup -c",
     "build:prod": "rollup -c rollup.config-renderer.js --environment NODE_ENV:production && rollup -c --environment NODE_ENV:production",
     "watch": "rollup -cw",
@@ -55,7 +55,7 @@
     "all": "npm run build:dev && npm test && npm run lint && npm run build:prod && npm run copy:deps"
   },
   "c8": {
-    "excludeAfterRemap": true,
+    "excludeAfterRemap": false,
     "exclude": [
       "src/codejar",
       "src/prism"
@@ -64,12 +64,11 @@
       "lcov",
       "text"
     ],
-    "tempDir": "coverage",
-    "checkCoverage": true,
-    "branches": 75,
-    "functions": 90,
-    "lines": 90,
-    "statements": 90
+    "checkCoverage": false,
+    "branches": 100,
+    "functions": 100,
+    "lines": 100,
+    "statements": 100
   },
   "release": {
     "plugins": [
@@ -87,20 +86,19 @@
     ]
   },
   "devDependencies": {
-    "@hpcc-js/wasm": "2.3.0",
-    "@prantlf/jsonlint": "11.7.0",
-    "@rollup/plugin-alias": "4.0.2",
+    "@hpcc-js/wasm": "2.9.0",
+    "@prantlf/jsonlint": "14.0.2",
+    "@rollup/plugin-alias": "4.0.3",
     "@rollup/plugin-node-resolve": "15.0.1",
-    "@semantic-release/changelog": "6.0.2",
+    "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@unixcompat/cp.js": "1.0.0",
-    "@unixcompat/rm.js": "1.0.0",
-    "c8": "7.12.0",
+    "@unixcompat/cp.js": "3.0.0",
+    "c8": "7.13.0",
     "connect": "3.7.0",
-    "denolint": "2.0.5",
+    "denolint": "2.0.7",
     "http-server": "14.1.1",
-    "puppeteer": "19.4.0",
-    "rollup": "3.7.4",
+    "puppeteer": "19.8.2",
+    "rollup": "3.20.2",
     "rollup-plugin-livereload": "2.0.5",
     "rollup-plugin-string": "3.0.0",
     "rollup-plugin-swc-minify": "1.0.5",

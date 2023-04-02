@@ -28,7 +28,7 @@ Render a graph:
 ```
 <custom-element-demo>
   <template>
-    <script defer src=https://unpkg.com/graphviz-webcomponent@1.1.0/dist/graph.min.js></script>
+    <script defer src=https://unpkg.com/graphviz-webcomponent@1.2.2/dist/graph.min.js></script>
     <graphviz-graph graph="
   digraph G {
     main -> parse -> execute;
@@ -46,7 +46,7 @@ Render a graph:
     main -> cleanup;
   }
 "></graphviz-graph>
-<script defer src=https://unpkg.com/graphviz-webcomponent@1.1.0/dist/graph.min.js></script>
+<script defer src=https://unpkg.com/graphviz-webcomponent@1.2.2/dist/graph.min.js></script>
 ```
 
 Show a script editor and render the edited content to a graph:
@@ -61,6 +61,7 @@ Show a script editor and render the edited content to a graph:
 <graphviz-graph id=graph></graphviz-graph>
 <script type=module>
   import 'https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index.min.mjs'
+  // Skip the original input event, process the second custom one with the new value
   document.getElementById('source').addEventListener('input', event =>
     if (event instanceof CustomEvent) { document.getElementById('graph').graph = event.detail })
 </script>
@@ -79,7 +80,7 @@ pnpm i graphviz-webcomponent
 If you write a plain HTML page, insert the `graphviz-webcomponent` script pointing either to CDN or to the local filesystem:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@1.2.2/dist/index.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/index.min.js></script>
 ```
 
@@ -130,7 +131,7 @@ The `graphviz-graph` element uses a [Web Worker] to perform the rendering in the
 
 ```js
 graphvizWebComponent = {
-  rendererUrl: 'https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index.min.js',
+  rendererUrl: 'https://unpkg.com/graphviz-webcomponent@1.2.2/dist/index.min.js',
   delayWorkerLoading: false
 }
 ```
@@ -152,7 +153,7 @@ If you want to enforce only local resources, you can change the URLs to relative
 Configuring the `rendererUrl` via `graphvizWebComponent` can be avoided, if you don't need to load the renderer script in the background. Choose one of the scripts with `-bundled` in their name then:
 
 ```html
-<script src=https://unpkg.com/graphviz-webcomponent@1.1.0/dist/index-bundled.min.js></script>
+<script src=https://unpkg.com/graphviz-webcomponent@1.2.2/dist/index-bundled.min.js></script>
 <script src=node_modules/graphviz-webcomponent/dist/graph-bundled.min.js></script>
 ```
 

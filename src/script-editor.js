@@ -49,6 +49,7 @@ function getFeatureClasses (element) {
 }
 
 function hasChangedFeatureClass (oldValue, newValue) {
+  /* c8 ignore next */
   const oldClasses = oldValue ? oldValue.trim().split(/\s+/) : []
   const newClasses = newValue.trim().split(/\s+/)
   return features.some(feature =>

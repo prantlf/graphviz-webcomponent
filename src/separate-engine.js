@@ -7,7 +7,7 @@ if (!delayWorkerLoading) setTimeout(getRenderer)
 function ensureConfiguration () {
   if (!rendererUrl) {
     ({
-      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@1.2.2/dist/renderer.min.js'
+      rendererUrl = 'https://unpkg.com/graphviz-webcomponent@1.2.3/dist/renderer.min.js'
     /* c8 ignore next */
     } = window.graphvizWebComponent || {})
   }

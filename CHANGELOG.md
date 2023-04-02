@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/prantlf/graphviz-webcomponent/compare/v1.2.1...v1.2.2) (2023-04-02)
+
+
+### Bug Fixes
+
+* Upgrade dependencies ([bf90a53](https://github.com/prantlf/graphviz-webcomponent/commit/bf90a537bf133d9c812991c99f87621de8ac1e5d))
+
 ## [1.2.1](https://github.com/prantlf/graphviz-webcomponent/compare/v1.2.0...v1.2.1) (2023-03-24)
 
 
